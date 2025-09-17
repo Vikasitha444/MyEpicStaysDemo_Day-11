@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from django.db import IntegrityError
 from .models import (
-    property, Users, Districts, 
+    Property, Users, Districts, 
     PropertyCategories, PropertyPictures, Excursions,
     PropertyRoomCategories
 )
@@ -31,16 +31,21 @@ def results(request):
       endDate = request.POST.get('endDate', '').strip()
       guests = request.POST.get('guests', '').strip()
      
-      all_properties  = property.objects.all()
-      properties_forignkeys = property.objects.select_related('districtid').all()
-
+      all_properties  = Property.objects.all()
+      fogign_key_try = Property.objects.select_related('districtid').all()
+      print(fogign_key_try)
+      
       context = {
           'destination': destination,
           'startDate': startDate,
           'endDate': endDate,
           'guests': guests,
           'all_propoties': all_properties,
-          'properties_forignkeys': properties_forignkeys,}
+          'foreign_key_try': fogign_key_try
+          }
+
+
+      
   
       return render(request, 'results.html',context)
     

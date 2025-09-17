@@ -346,9 +346,17 @@
     </style>
 </head>
 <body>
-    <h1>{{ properties_forignkeys }} </h1>
-  
 
+    <table border="1">
+        <tr>
+            <th>Foreign Key Test:</th>
+            <td><h1>
+                {% for item in foreign_key_try %}
+                    {{ item.districtid.title }} <!-- Accessing the title of the related Districts model -->
+                {% endfor %}
+
+            </h1></td>
+    </table>
         
 
     <header>

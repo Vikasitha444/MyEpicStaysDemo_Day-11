@@ -16,14 +16,14 @@ class AwardAuthorities(models.Model):
         db_table = 'award_authorities'
 
 class Districts(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    districtid = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=255)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    
 
     class Meta:
         managed = False
-        db_table = 'districts'
+        db_table = 'district'
+#districtid
 
 class ExcursionMedia(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -80,14 +80,14 @@ class Icons(models.Model):
 #         managed = False
 #         db_table = 'notifications'
 
-class property(models.Model):
+class Property(models.Model):
     propertyid = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=255)
     longdescription = models.TextField()
     shortdescription = models.CharField(max_length=255)
     propertycategory = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
-    districtid = models.IntegerField()
+    districtid = models.ForeignKey(Districts, on_delete=models.CASCADE, db_column='districtid')
     defaultpictureid = models.CharField(max_length=20)
     googlemappin = models.CharField(max_length=200)
     verified = models.CharField(max_length=3)
