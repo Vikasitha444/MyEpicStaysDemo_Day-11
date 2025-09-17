@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Tours - Travel Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo::before {
+            content: "🌍";
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        .menu-icon {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-tab {
+            padding: 15px 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            color: #ff6b35;
+            border-bottom-color: #ff6b35;
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .nav-tab:hover {
+            color: #ff6b35;
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero-title {
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin-bottom: 50px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Search Form */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .date-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, #1a73e8 0%, #1557b8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(26, 115, 232, 0.3);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .search-container {
+                margin: 0 10px;
+                padding: 30px 20px;
+            }
+            
+            .date-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .nav-tab {
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-container {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            Love Tours
+        </div>
+        <div class="menu-icon">☰</div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+        <button class="nav-tab">Hotel</button>
+        <button class="nav-tab active">Flights</button>
+        <button class="nav-tab">Experiences</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="hero-title">FIND THE BEST DESTINATION FOR TRAVEL</h1>
+        <p class="hero-subtitle">We guarantee 100% all places in our website is genuine</p>
+
+        <!-- Search Form -->
+        <div class="search-container">
+        <form method="POST" action="results/" id="searchForm">
+            {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">Destination</label>
+                    <input type="text" name="destination" class="form-input" placeholder="Where do you want to go?" required>
+                </div>
+
+                <div class="date-row">
+                    <div class="form-group">
+                        <label class="form-label">Starting Date</label>
+                        <input type="date" name="startDate" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ending Date</label>
+                        <input type="date" name="endDate" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Guests</label>
+                    <select class="form-input" name="guests">
+                        <option value="">Select guests</option>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5+ Guests</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="search-btn">🔍 Find</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Form submission
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            //e.preventDefault();
+            
+            // Get form data
+            const destination = this.querySelector('input[type="text"]').value;
+            const startDate = this.querySelector('input[type="date"]').value;
+            const endDate = this.querySelector('input[type="date"]').value;
+            const guests = this.querySelector('select').value;
+            
+            // Simple validation
+            if (!destination || !startDate || !endDate) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Show search results (placeholder)
+            //alert(`Searching for:\nDestination: ${destination}\nDates: ${startDate} to ${endDate}\nGuests: ${guests || 'Not specified'}`);
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.setAttribute('min', today);
+        });
+
+        // Ensure end date is after start date
+        const startDateInput = document.querySelector('input[type="date"]');
+        const endDateInput = document.querySelectorAll('input[type="date"]')[1];
+        
+        startDateInput.addEventListener('change', function() {
+            endDateInput.setAttribute('min', this.value);
+        });
+    </script>
+</body>
+</html>

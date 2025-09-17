@@ -1,0 +1,583 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>Search Results</h1>
+    <p>Destination: {{ destination }}</p>
+    <p>Start Date: {{ startDate }}</p>
+    <p>End Date: {{ endDate }}</p>
+    <p>Guests: {{ guests }}</p>
+
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelEase - සරල නවාතැන් වෙන්කිරීම</title>
+    <style>
+        :root {
+            --primary: #4a89dc;
+            --secondary: #5cb85c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #f0f0f0;
+            --text: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+        }
+        
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .search-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input, select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #3a79cc;
+        }
+        
+        .advanced-filters {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .show-filters {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.5rem 0;
+            text-decoration: underline;
+        }
+        
+        .filter-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .results-view-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .view-toggle {
+            display: flex;
+        }
+        
+        .view-toggle button {
+            background-color: white;
+            color: var(--text);
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+        }
+        
+        .view-toggle button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .view-toggle button:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .view-toggle button:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .sort-options select {
+            padding: 0.5rem;
+        }
+        
+        .hotel-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .hotel-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+        }
+        
+        .hotel-image {
+            width: 250px;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .hotel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hotel-details {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hotel-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hotel-location {
+            display: flex;
+            align-items: center;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .hotel-amenities {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .amenity {
+            background-color: var(--gray);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hotel-price {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .price-details {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .compare-checkbox {
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .compare-checkbox input {
+            margin-right: 0.5rem;
+        }
+        
+        .comparison-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .selected-hotels {
+            display: flex;
+        }
+        
+        .selected-hotel {
+            margin-right: 1rem;
+            padding: 0.5rem;
+            background-color: var(--gray);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .selected-hotel img {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .pagination button {
+            margin: 0 0.25rem;
+            background-color: white;
+            color: var(--text);
+            border: 1px solid #ddd;
+        }
+        
+        .pagination button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .hotel-card {
+                flex-direction: column;
+            }
+            
+            .hotel-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ properties_forignkeys }} </h1>
+  
+
+        
+
+    <header>
+        <div class="logo">TravelEase</div>
+        <nav>
+            <ul>
+                <li><a href="#">ප්‍රධාන පිටුව</a></li>
+                <li><a href="#">හෝටල්</a></li>
+                <li><a href="#">ගුවන් ටිකට්</a></li>
+                <li><a href="#">ගිණුම</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <form class="search-form">
+                <div class="form-group">
+                    <label for="location">ස්ථානය</label>
+                    <input type="text" id="location" placeholder="නගරය හෝ හෝටලය යොදන්න">
+                </div>
+                <div class="form-group">
+                    <label for="check-in">පැමිණෙන දිනය</label>
+                    <input type="date" id="check-in">
+                </div>
+                <div class="form-group">
+                    <label for="check-out">පිටත්වන දිනය</label>
+                    <input type="date" id="check-out">
+                </div>
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button type="submit">සොයන්න</button>
+                </div>
+            </form>
+            
+            <button class="show-filters" onclick="toggleFilters()">වැඩිදුර පෙරහන් පෙන්වන්න</button>
+            
+            <div class="advanced-filters" id="filters">
+                <div class="filter-options">
+                    <div class="form-group">
+                        <label for="price">මිල පරාසය</label>
+                        <select id="price">
+                            <option>සියලුම මිල ගණන්</option>
+                            <option>රු 5,000 ට අඩු</option>
+                            <option>රු 5,000 - රු 10,000</option>
+                            <option>රු 10,000 - රු 15,000</option>
+                            <option>රු 15,000 වැඩි</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">තරු ගණන</label>
+                        <select id="rating">
+                            <option>සියලුම හෝටල්</option>
+                            <option>තරු 3 සහ ඊට වැඩි</option>
+                            <option>තරු 4 සහ ඊට වැඩි</option>
+                            <option>තරු 5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amenities">පහසුකම්</label>
+                        <select id="amenities">
+                            <option>සියලුම පහසුකම්</option>
+                            <option>පිහිනුම් තටාකය</option>
+                            <option>නොමිලේ Wi-Fi</option>
+                            <option>ආහාර පාන</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-view-options">
+            <div class="view-toggle">
+                <button class="active">ලැයිස්තුව</button>
+                <button>සිතියම</button>
+            </div>
+            
+            <div class="sort-options">
+                <select>
+                    <option>ඔබට වඩාත් සුදුසු</option>
+                    <option>මිල - අඩුම සිට වැඩිම</option>
+                    <option>මිල - වැඩිම සිට අඩුම</option>
+                    <option>ශ්‍රේණිගත කිරීම - ඉහළම</option>
+                </select>
+            </div>
+        </div>
+
+        
+        
+        {% for property in all_propoties %}  <!-- Use the same name as the working one -->
+        <div class="hotel-list">
+            <div class="hotel-card">
+                <div class="hotel-image">
+                    <img src="./02.jpg" alt="හෝටලය">
+                </div>
+                <div class="hotel-details">
+                    <h3 class="hotel-name">{{ property.title }}</h3>
+                    <div class="hotel-location">
+                        <span>{{ property.address }}</span>  <!-- Use address since location field might not exist -->
+                    </div>
+                    <div class="hotel-amenities">
+                        <span class="amenity">පිහිනුම් තටාකය</span>
+                        <span class="amenity">නොමිලේ Wi-Fi</span>
+                        <span class="amenity">ආහාර පාන</span>
+                        <span class="amenity">ඒසී</span>
+                    </div>
+                    <div class="hotel-price">
+                        <div>
+                            <div class="price">රු {{ property.salary }}</div>  <!-- Use salary field since price might not exist -->
+                            <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                        </div>
+                        <div class="compare-checkbox">
+                            <input type="checkbox" id="compare{{ forloop.counter }}">
+                            <label for="compare{{ forloop.counter }}">සසඳන්න</label>
+                        </div>
+                        <button>තෝරන්න</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="text-center">No properties available.</div>
+    {% endfor %}
+            
+            
+            <div class="hotel-card">
+                <div class="hotel-image">
+                    <img src="/api/placeholder/400/320" alt="හෝටලය">
+                </div>
+                <div class="hotel-details">
+                    <h3 class="hotel-name">ගල්වල රිසෝට්</h3>
+                    <div class="hotel-location">
+                        <span>පැලවත්ත, නුවර</span>
+                    </div>
+                    <div class="hotel-amenities">
+                        <span class="amenity">පිහිනුම් තටාකය</span>
+                        <span class="amenity">නොමිලේ Wi-Fi</span>
+                        <span class="amenity">ආහාර පාන</span>
+                    </div>
+                    <div class="hotel-price">
+                        <div>
+                            <div class="price">රු 8,900</div>
+                            <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                        </div>
+                        <div class="compare-checkbox">
+                            <input type="checkbox" id="compare2">
+                            <label for="compare2">සසඳන්න</label>
+                        </div>
+                        <button>තෝරන්න</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hotel-card">
+                <div class="hotel-image">
+                    <img src="/api/placeholder/400/320" alt="හෝටලය">
+                </div>
+                <div class="hotel-details">
+                    <h3 class="hotel-name">මුහුදු තරණය</h3>
+                    <div class="hotel-location">
+                        <span>වැල්ලවත්ත, ගාල්ල</span>
+                    </div>
+                    <div class="hotel-amenities">
+                        <span class="amenity">මුහුදු දර්ශනය</span>
+                        <span class="amenity">නොමිලේ Wi-Fi</span>
+                        <span class="amenity">උදේ ආහාරය</span>
+                    </div>
+                    <div class="hotel-price">
+                        <div>
+                            <div class="price">රු 15,750</div>
+                            <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                        </div>
+                        <div class="compare-checkbox">
+                            <input type="checkbox" id="compare3">
+                            <label for="compare3">සසඳන්න</label>
+                        </div>
+                        <button>තෝරන්න</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>></button>
+        </div>
+    </div>
+    
+    <div class="comparison-bar" id="comparison-bar">
+        <div class="selected-hotels">
+            <div class="selected-hotel">
+                <img src="/api/placeholder/80/80" alt="හෝටලය">
+                <span>සිංහරාජ රිසෝට්</span>
+            </div>
+            <div class="selected-hotel">
+                <img src="https://business.booking.com/storage/assets/media/34/booking-b2b-solving-pain-point_300b50cb593d2b59c5f54363f10dc59d8b.webp" alt="හෝටලය">
+                <span>ගල්වල රිසෝට්</span>
+            </div>
+        </div>
+        <button>සසඳන්න</button>
+    </div>
+    
+    <script>
+        // Toggle advanced filters
+        function toggleFilters() {
+            const filters = document.getElementById('filters');
+            if (filters.style.display === 'block') {
+                filters.style.display = 'none';
+            } else {
+                filters.style.display = 'block';
+            }
+        }
+        
+        // Toggle comparison bar
+        const checkboxes = document.querySelectorAll('.compare-checkbox input');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const comparisonBar = document.getElementById('comparison-bar');
+                const checkedBoxes = document.querySelectorAll('.compare-checkbox input:checked');
+                
+                if (checkedBoxes.length > 0) {
+                    comparisonBar.style.display = 'flex';
+                } else {
+                    comparisonBar.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
