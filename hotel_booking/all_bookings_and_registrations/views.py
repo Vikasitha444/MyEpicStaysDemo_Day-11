@@ -32,8 +32,14 @@ def results(request):
       guests = request.POST.get('guests', '').strip()
      
       all_properties  = Property.objects.all()
-      fogign_key_try = Property.objects.select_related('districtid').all()
-      print(fogign_key_try)
+
+      #මෙතන, Foreign Key එකක් භාවිතා කරලා, "propertycategory" table එකේ data ලබා ගන්නවා.
+      #ඒ සඳහා, select_related() method එක භාවිතා කරනවා.
+      # select_related() method එක, Foreign Key relationship එකක් ඇති fields වල data එකතු කරලා, single query එකක් තුළින් ලබා ගන්නා විදිහයි.
+      # මෙතන, 'propertycategory' කියලා තියෙන්නේ, Property Table එකේ Foreign Key field එකේ නමයි.
+      # ඒ field එක, PropertyCategories model එකට refer කරනවා.
+      propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
+      
       
       context = {
           'destination': destination,
@@ -41,7 +47,7 @@ def results(request):
           'endDate': endDate,
           'guests': guests,
           'all_propoties': all_properties,
-          'foreign_key_try': fogign_key_try
+          'propertycategory': propertycategory_all_related_tables
           }
 
 

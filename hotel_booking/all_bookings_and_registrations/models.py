@@ -80,12 +80,22 @@ class Icons(models.Model):
 #         managed = False
 #         db_table = 'notifications'
 
+class PropertyCategories(models.Model):
+    propertycategoryid = models.BigAutoField(primary_key=True)
+    title = models.CharField(max_length=255)
+    iconid = models.BigIntegerField()
+    picture = models.CharField(max_length=255)
+    
+    class Meta:
+        managed = False
+        db_table = 'propertycategory'
+
 class Property(models.Model):
     propertyid = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=255)
     longdescription = models.TextField()
     shortdescription = models.CharField(max_length=255)
-    propertycategory = models.CharField(max_length=20)
+    propertycategory = models.ForeignKey(PropertyCategories, on_delete=models.CASCADE, db_column='propertycategory')
     address = models.CharField(max_length=200)
     districtid = models.ForeignKey(Districts, on_delete=models.CASCADE, db_column='districtid')
     defaultpictureid = models.CharField(max_length=20)
@@ -114,17 +124,7 @@ class PropertyAwards(models.Model):
         managed = False
         db_table = 'property_awards'
 
-class PropertyCategories(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=255)
-    icon_id = models.BigIntegerField()
-    picture = models.CharField(max_length=255)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
 
-    class Meta:
-        managed = False
-        db_table = 'property_categories'
 
 class PropertyFacilities(models.Model):
     id = models.BigAutoField(primary_key=True)

@@ -347,16 +347,17 @@
 </head>
 <body>
 
-    <table border="1">
+    <!-- මෙතන Forign Key එක, Table එකකට දාලා Display කරනවා-->
+    <!-- <table border="1">
         <tr>
             <th>Foreign Key Test:</th>
             <td><h1>
-                {% for item in foreign_key_try %}
-                    {{ item.districtid.title }} <!-- Accessing the title of the related Districts model -->
+                {% for pc in propertycategory %}
+                    {{ pc.propertycategory.picture }} 
                 {% endfor %}
 
             </h1></td>
-    </table>
+    </table> -->
         
 
     <header>
@@ -443,43 +444,48 @@
                 </select>
             </div>
         </div>
-
+        <!-- {% for pc in propertycategory %}
+                    {{ pc.propertycategory.picture }} 
+                {% endfor %} -->
         
         
         {% for property in all_propoties %}  <!-- Use the same name as the working one -->
-        <div class="hotel-list">
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="./02.jpg" alt="හෝටලය">
-                </div>
-                <div class="hotel-details">
-                    <h3 class="hotel-name">{{ property.title }}</h3>
-                    <div class="hotel-location">
-                        <span>{{ property.address }}</span>  <!-- Use address since location field might not exist -->
+        {% for pc in propertycategory %}
+        
+            <div class="hotel-list">
+                <div class="hotel-card">
+                    <div class="hotel-image">
+                        <img src="{{ pc.propertycategory.picture }} " alt="හෝටලය">
                     </div>
-                    <div class="hotel-amenities">
-                        <span class="amenity">පිහිනුම් තටාකය</span>
-                        <span class="amenity">නොමිලේ Wi-Fi</span>
-                        <span class="amenity">ආහාර පාන</span>
-                        <span class="amenity">ඒසී</span>
-                    </div>
-                    <div class="hotel-price">
-                        <div>
-                            <div class="price">රු {{ property.salary }}</div>  <!-- Use salary field since price might not exist -->
-                            <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                    <div class="hotel-details">
+                        <h3 class="hotel-name">{{ property.title }}</h3>
+                        <div class="hotel-location">
+                            <span>{{ property.address }}</span>  <!-- Use address since location field might not exist -->
                         </div>
-                        <div class="compare-checkbox">
-                            <input type="checkbox" id="compare{{ forloop.counter }}">
-                            <label for="compare{{ forloop.counter }}">සසඳන්න</label>
+                        <div class="hotel-amenities">
+                            <span class="amenity">පිහිනුම් තටාකය</span>
+                            <span class="amenity">නොමිලේ Wi-Fi</span>
+                            <span class="amenity">ආහාර පාන</span>
+                            <span class="amenity">ඒසී</span>
                         </div>
-                        <button>තෝරන්න</button>
+                        <div class="hotel-price">
+                            <div>
+                                <div class="price">රු {{ property.salary }}</div>  <!-- Use salary field since price might not exist -->
+                                <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                            </div>
+                            <div class="compare-checkbox">
+                                <input type="checkbox" id="compare{{ forloop.counter }}">
+                                <label for="compare{{ forloop.counter }}">සසඳන්න</label>
+                            </div>
+                            <button>තෝරන්න</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% empty %}
+        
         <div class="text-center">No properties available.</div>
     {% endfor %}
+{% endfor %}
             
             
             <div class="hotel-card">
