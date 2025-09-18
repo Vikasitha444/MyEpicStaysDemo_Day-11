@@ -30,13 +30,17 @@ def home(request):
 
 def results(request):
   if request.method == 'POST':  
-      destination = request.POST.get('destination', '').strip()
+      destination = request.POST.get('destination', '').strip() #මේකේ තියෙන්නේ, form එකෙන් එන, destination කියන field එකේ, value එක. මේකෙන් ගන්නේ, District එකේ ID එක.
       startDate = request.POST.get('startDate', '').strip()
       endDate = request.POST.get('endDate', '').strip()
       guests = request.POST.get('guests', '').strip()
-     
-      all_properties  = Property.objects.all()
+      print("Destination ID is:", destination)
 
+      #තියෙන ඔක්කොම Property වල දත්ත, Databse එකෙන් ලබා ගන්නවා. 
+      all_properties  = Property.objects.all()
+      #all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
+      #galle_destinations = Property.objects.select_related('districtid').filter(districtid=destination)
+      
       #මෙතන, Foreign Key එකක් භාවිතා කරලා, "propertycategory" table එකේ data ලබා ගන්නවා.
       #ඒ සඳහා, select_related() method එක භාවිතා කරනවා.
       # select_related() method එක, Foreign Key relationship එකක් ඇති fields වල data එකතු කරලා, single query එකක් තුළින් ලබා ගන්නා විදිහයි.
@@ -53,7 +57,8 @@ def results(request):
           'guests': guests,
           'all_properties': all_properties,
           'propertycategory': propertycategory_all_related_tables
-          ,'all_districts': all_districts
+          ,'all_districts': all_districts,
+          #'galle_destinations': galle_destinations
           }
 
 

@@ -359,7 +359,7 @@
             </h1></td>
     </table> -->
         
-
+    
     <header>
         <div class="logo">MyEpicStays</div>
         <nav>
@@ -381,7 +381,7 @@
                     <select name="destination" class="form-input" required>
                         <option value="">Select your destination</option>
                         {% for s in all_districts %}
-                            <option value="{{ s.districtid.titile }}">{{ s.districtid.title }}</option>
+                            <option value="{{ s.districtid.districtid }}">{{ s.districtid.title }}</option>
                         {% endfor %}
                     </select>
                 </div>
