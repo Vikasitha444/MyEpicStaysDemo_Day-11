@@ -449,46 +449,82 @@
                 {% endfor %} -->
         
         
-        {% for property in all_propoties %}  <!-- Use the same name as the working one -->
-        {% for pc in propertycategory %}
-        
-            <div class="hotel-list">
-                <div class="hotel-card">
-                    <div class="hotel-image">
-                        <img src="{{ pc.propertycategory.picture }} " alt="හෝටලය">
-                    </div>
-                    <div class="hotel-details">
-                        <h3 class="hotel-name">{{ property.title }}</h3>
-                        <div class="hotel-location">
-                            <span>{{ property.address }}</span>  <!-- Use address since location field might not exist -->
+            <!-- Debug Information (remove in production) -->
+    <div class="debug-info" style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
+        <h4>Debug Info:</h4>
+        <p>Total Properties: {{ all_properties|length }}</p>
+        <p>Total Categories: {{ propertycategory|length }}</p>
+        <p>Properties available: {% if all_properties %}Yes{% else %}No{% endif %}</p>
+    </div>
+
+    <!-- Properties List -->
+    {% if all_properties %}
+        <div class="properties-container">
+            {% for property in all_properties %}
+                <div class="hotel-list">
+                    <div class="hotel-card">
+                        <div class="hotel-image">
+                            {% if property.propertycategory.picture %}
+                                <img src="{{ property.propertycategory.picture }}" alt="{{ property.title }}">
+                            {% else %}
+                                <img src="/static/images/default-hotel.jpg" alt="Default Hotel Image">
+                            {% endif %}
                         </div>
-                        <div class="hotel-amenities">
-                            <span class="amenity">පිහිනුම් තටාකය</span>
-                            <span class="amenity">නොමිලේ Wi-Fi</span>
-                            <span class="amenity">ආහාර පාන</span>
-                            <span class="amenity">ඒසී</span>
-                        </div>
-                        <div class="hotel-price">
-                            <div>
-                                <div class="price">රු {{ property.salary }}</div>  <!-- Use salary field since price might not exist -->
-                                <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                        <div class="hotel-details">
+                            <h3 class="hotel-name">{{ property.title }}</h3>
+                            <div class="hotel-location">
+                                <i class="location-icon">📍</i>
+                                <span>{{ property.address|default:"ලිපිනය නොමැත" }}</span>
                             </div>
-                            <div class="compare-checkbox">
-                                <input type="checkbox" id="compare{{ forloop.counter }}">
-                                <label for="compare{{ forloop.counter }}">සසඳන්න</label>
+                            <div class="hotel-category">
+                                <span class="category-badge">{{ property.propertycategory.title|default:"කාණ්ඩය නොමැත" }}</span>
                             </div>
-                            <button>තෝරන්න</button>
+                            <div class="hotel-amenities">
+                                <span class="amenity">පිහිනුම් තටාකය</span>
+                                <span class="amenity">නොමිලේ Wi-Fi</span>
+                                <span class="amenity">ආහාර පාන</span>
+                                <span class="amenity">ඒසී</span>
+                            </div>
+                            <div class="hotel-price">
+                                <div class="price-section">
+                                    <div class="price">රු {{ property.salary|floatformat:0 }}</div>
+                                    <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                                </div>
+                                <div class="actions">
+                                    <div class="compare-checkbox">
+                                        <input type="checkbox" id="compare{{ forloop.counter }}" name="compare_properties" value="{{ property.id }}">
+                                        <label for="compare{{ forloop.counter }}">සසඳන්න</label>
+                                    </div>
+                                    <button class="select-btn" data-property-id="{{ property.id }}">තෝරන්න</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination (if needed) -->
+        <div class="pagination-container">
+            <div class="pagination">
+                <button class="page-btn">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">></button>
             </div>
-        
-        <div class="text-center">No properties available.</div>
-    {% endfor %}
-{% endfor %}
+        </div>
+
+    {% else %}
+        <div class="no-results">
+            <div class="text-center">
+                <h3>කිසිදු හෝටලයක් නොමැත</h3>
+                <p>දැනට කිසිදු හෝටලයක් ලබා ගත නොහැකිය</p>
+            </div>
+        </div>
+    {% endif %}
+
             
-            
-            <div class="hotel-card">
+            <!-- <div class="hotel-card">
                 <div class="hotel-image">
                     <img src="/api/placeholder/400/320" alt="හෝටලය">
                 </div>
@@ -542,7 +578,7 @@
                         <button>තෝරන්න</button>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         
         <div class="pagination">

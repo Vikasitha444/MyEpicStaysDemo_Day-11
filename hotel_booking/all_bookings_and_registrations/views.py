@@ -41,12 +41,13 @@ def results(request):
       propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
       
       
+      
       context = {
           'destination': destination,
           'startDate': startDate,
           'endDate': endDate,
           'guests': guests,
-          'all_propoties': all_properties,
+          'all_properties': all_properties,
           'propertycategory': propertycategory_all_related_tables
           }
 

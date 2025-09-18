@@ -1,2 +1,12 @@
-අද මට තියෙන්නේ, Large Scle Project එකක් වෙන, MyEpicStays එක එකේ,  Seach Process එක සිදු කරන්න
+අද මට තියෙන්නේ, Large Scle Project එකක් වෙන, MyEpicStays එක එකේ,  Seach Process එක සිදු කරන්න.
+
+Search කරන Data, Templates වලට Pass කරන  විදිහ ඉගෙන ගත්තා.
+
+Forign Key භාවිතා කරන විදිහ ඉගෙන ගත්තා. Relation කිහිපයක් තියෙන
+
+Template එකක Loop එකක් ඇතුලේ තව Loop එකක data display කරන  විදිහ ඉගෙන ගත්තා.
+
+User Interface එකයි, Backend එකයි අතරේ කොහොමද, proper විදිහට, Data හුවමාරු කරන්නේ කියලා දැනගත්තා.
+
+
 
