@@ -9,4 +9,6 @@ Template එකක Loop එකක් ඇතුලේ තව Loop එකක data 
 User Interface එකයි, Backend එකයි අතරේ කොහොමද, proper විදිහට, Data හුවමාරු කරන්නේ කියලා දැනගත්තා.
 
 
+Images Display කරන විදිහ දැනගත්තා
+
 

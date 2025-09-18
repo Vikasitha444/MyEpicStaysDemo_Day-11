@@ -19,7 +19,11 @@ from .models import (
 
 
 def home(request):
-  return render(request, 'home.html')
+  all_districts = Property.objects.select_related('districtid').all() 
+  context = {
+      'all_districts': all_districts  
+  }
+  return render(request, 'home.html',context)
 
 
 

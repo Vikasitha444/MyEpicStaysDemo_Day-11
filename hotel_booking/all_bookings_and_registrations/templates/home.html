@@ -218,9 +218,7 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="logo">
-            Love Tours
-        </div>
+        <img src="" alt="">
         <div class="menu-icon">☰</div>
     </header>
 
@@ -235,14 +233,19 @@
     <main class="main-content">
         <h1 class="hero-title">FIND THE BEST DESTINATION FOR TRAVEL</h1>
         <p class="hero-subtitle">We guarantee 100% all places in our website is genuine</p>
-
+        
         <!-- Search Form -->
         <div class="search-container">
         <form method="POST" action="results/" id="searchForm">
             {% csrf_token %}
                 <div class="form-group">
                     <label class="form-label">Destination</label>
-                    <input type="text" name="destination" class="form-input" placeholder="Where do you want to go?" required>
+                    <select name="destination" class="form-input" required>
+                        <option value="">Select your destination</option>
+                        {% for s in all_districts %}
+                            <option value="{{ s.districtid.titile }}">{{ s.districtid.title }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="date-row">
