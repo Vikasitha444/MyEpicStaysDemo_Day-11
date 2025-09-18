@@ -34,12 +34,7 @@ def results(request):
       startDate = request.POST.get('startDate', '').strip()
       endDate = request.POST.get('endDate', '').strip()
       guests = request.POST.get('guests', '').strip()
-      print("Destination ID is:", destination)
-
-      #මේකෙන්, Location එකට පමණක් අදාළ Results Filter කරලා ගන්නවා. 
-      #all_properties  = Property.objects.all()
-      all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
-      #galle_destinations = Property.objects.select_related('districtid').filter(districtid=destination)
+    
       
       #මෙතන, Foreign Key එකක් භාවිතා කරලා, "propertycategory" table එකේ data ලබා ගන්නවා.
       #ඒ සඳහා, select_related() method එක භාවිතා කරනවා.
@@ -47,7 +42,12 @@ def results(request):
       # මෙතන, 'propertycategory' කියලා තියෙන්නේ, Property Table එකේ Foreign Key field එකේ නමයි.
       # ඒ field එක, PropertyCategories model එකට refer කරනවා.
       propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
+      
+      
       all_districts = Property.objects.select_related('districtid').all() 
+      
+      #මේකෙන්, Location එකට පමණක් අදාළ Results Filter කරලා ගන්නවා. 
+      all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
       
       
       context = {
@@ -58,7 +58,7 @@ def results(request):
           'all_properties': all_properties,
           'propertycategory': propertycategory_all_related_tables
           ,'all_districts': all_districts,
-          #'galle_destinations': galle_destinations
+          
           }
 
 
