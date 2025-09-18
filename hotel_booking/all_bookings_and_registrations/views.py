@@ -43,7 +43,7 @@ def results(request):
       # මෙතන, 'propertycategory' කියලා තියෙන්නේ, Property Table එකේ Foreign Key field එකේ නමයි.
       # ඒ field එක, PropertyCategories model එකට refer කරනවා.
       propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
-      
+      all_districts = Property.objects.select_related('districtid').all() 
       
       
       context = {
@@ -53,6 +53,7 @@ def results(request):
           'guests': guests,
           'all_properties': all_properties,
           'propertycategory': propertycategory_all_related_tables
+          ,'all_districts': all_districts
           }
 
 

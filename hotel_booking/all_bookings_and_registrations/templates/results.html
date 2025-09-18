@@ -378,7 +378,12 @@
             {% csrf_token %}
                 <div class="form-group">
                     <label for="destination">ස්ථානය</label>
-                    <input type="text" name="destination" id="location" placeholder="නගරය හෝ හෝටලය යොදන්න">
+                    <select name="destination" class="form-input" required>
+                        <option value="">Select your destination</option>
+                        {% for s in all_districts %}
+                            <option value="{{ s.districtid.titile }}">{{ s.districtid.title }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="check-in">පැමිණෙන දිනය</label>
