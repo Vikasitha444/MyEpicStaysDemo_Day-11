@@ -36,9 +36,9 @@ def results(request):
       guests = request.POST.get('guests', '').strip()
       print("Destination ID is:", destination)
 
-      #තියෙන ඔක්කොම Property වල දත්ත, Databse එකෙන් ලබා ගන්නවා. 
-      all_properties  = Property.objects.all()
-      #all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
+      #මේකෙන්, Location එකට පමණක් අදාළ Results Filter කරලා ගන්නවා. 
+      #all_properties  = Property.objects.all()
+      all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
       #galle_destinations = Property.objects.select_related('districtid').filter(districtid=destination)
       
       #මෙතන, Foreign Key එකක් භාවිතා කරලා, "propertycategory" table එකේ data ලබා ගන්නවා.
