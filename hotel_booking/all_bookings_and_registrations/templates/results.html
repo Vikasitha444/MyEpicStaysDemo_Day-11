@@ -477,7 +477,7 @@
                             {% endif %}
                         </div>
                         <div class="hotel-details">
-                            <h3 class="hotel-name">{{ property.title }}</h3>
+                            <h3 class="hotel-name"><a href="info?id={{ property.uuid }}">{{ property.title }}</a></h3>
                             <div class="hotel-location">
                                 <i class="location-icon">📍</i>
                                 <span>{{ property.address|default:"ලිපිනය නොමැත" }}</span>

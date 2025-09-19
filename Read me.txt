@@ -9,6 +9,14 @@ Template එකක Loop එකක් ඇතුලේ තව Loop එකක data 
 User Interface එකයි, Backend එකයි අතරේ කොහොමද, proper විදිහට, Data හුවමාරු කරන්නේ කියලා දැනගත්තා.
 
 
-Images Display කරන විදිහ දැනගත්තා
+Images Display කරන විදිහ දැනගත්තා.
+
+
+"reulsts.html" පිටුවේ, Seach Bar එකේ, Database එකේ තියෙන දිස්ත්‍රික්ක විතරක්, Dropdown එකකින් Select කරන්න පුළුවන් වෙන විදිහට හැදුවා
+
+
+* Security එක වැඩි කරන්න, නිතර Web Pages අතර දත්ත හුවමාරු වන, Tables වල IDs, UUID (Universally Unique Identifier) බවට Convert කරලා, අලුත් Column එකක Store කරන විදිහ ඉගෙන ගත්තා. මේ සඳහා, Django වල Inbuild Library එකක් තියෙනවා වගේම, අපිට මේක Manuel UUID කරලා, Store කරන්නත් පුළුවන්.
+
+
 
 

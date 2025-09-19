@@ -412,14 +412,25 @@
     </style>
 </head>
 <body>
+    <!-- {% for property in  properties %}
+    {% for facilities in  property_facilities %}
+    <h1>{{ property.address }}</h1>
+    <h1>{{ facilities.title }}</h1>
+    {% endfor %}
+    {% endfor %}
+    <h1>{{ property_facilities.title }}</h1>
+    <h1>{{ property.title }}</h1> -->
+
+    {% for property in  properties %}
+    {% for facilities in  property_facilities %}
     <div class="container">
         <div class="property-header">
             <div>
-                <div class="property-category">Airport shuttle</div>
-                <h1 class="property-title">Seconds Hostel - Colombo</h1>
+                <div class="property-category">{{ facilities.title }}</div>
+                <h1 class="property-title">{{ property.title }}</h1>
                 <div class="location-container">
                     <span class="location-icon">📍</span>
-                    <span class="location-label">44 Kirulapone Avenue Colombo 05, 00500 Colombo, Sri Lanka</span>
+                    <span class="location-label">{{ property.address }}</span>
                     <span class="location-rating">Great location • Show map</span>
                 </div>
             </div>
@@ -435,7 +446,7 @@
         
         <div class="gallery-container">
             <div class="gallery-main-image">
-                <img src="./01.jpg" alt="Pool view at night" class="gallery-image">
+                <img src="{{ property.propertycategory.picture }}" alt="Pool view at night" class="gallery-image">
             </div>
             <div class="gallery-thumbnail">
                 <img src="./01.jpg" alt="Bed area" class="gallery-image">
@@ -523,5 +534,7 @@
             </div>
         </div>
     </div>
+    {% endfor %}
+    {% endfor %}
 </body>
 </html>

@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from django.db import IntegrityError
 from .models import (
-    Property, Users, Districts, 
+    Property, Users, Districts,  PropertyFacilities,
     PropertyCategories, PropertyPictures, Excursions,
     PropertyRoomCategories
 )
@@ -70,12 +70,20 @@ def results(request):
 
 
 
-def info(request):
-
-    return render(request, 'info.html')
-
-
-   
+def info(request):    
+    uuid_of_the_clicked_hotel = request.GET.get('id', '').strip()
+    
+    
+    properties = Property.objects.select_related('propertycategory','districtid').filter(uuid = uuid_of_the_clicked_hotel)
+    
+    
+    propertyid_extraction_from_uuid = Property.objects.filter(uuid = uuid_of_the_clicked_hotel).values('propertyid')
+    property_facilities = PropertyFacilities.objects.filter(propertyid = propertyid_extraction_from_uuid[0]['propertyid'])
+    context = {
+        'properties': properties,
+        'property_facilities': property_facilities
+    }   
+    return render(request, 'info.html', context)
     
 
 

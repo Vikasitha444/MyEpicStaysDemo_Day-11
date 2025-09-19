@@ -106,6 +106,7 @@ class Property(models.Model):
     verifiednotes = models.CharField(max_length=200)
     enabled = models.CharField(max_length=3)
     nextverification = models.CharField(max_length=200)
+    uuid = models.CharField(max_length=36)
 
     class Meta:
         managed = False
@@ -127,18 +128,18 @@ class PropertyAwards(models.Model):
 
 
 class PropertyFacilities(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    property_id = models.BigIntegerField()
-    icon_id = models.BigIntegerField()
+    propertyfacilitiesid = models.BigAutoField(primary_key=True)
+    propertyid = models.ForeignKey(Property, on_delete=models.CASCADE, db_column='propertyid')
+    iconid = models.BigIntegerField()
     title = models.CharField(max_length=255)
     description = models.TextField()
-    property_picture_id = models.BigIntegerField()
-    long_description_details = models.TextField()
-    created_at = models.DateTimeField()
+    propertypictureid = models.BigIntegerField()
+    sizedimentiondetails = models.TextField()
+    
 
     class Meta:
         managed = False
-        db_table = 'property_facilities'
+        db_table = 'propertyfacilities'
 
 class PropertyPictures(models.Model):
     id = models.BigAutoField(primary_key=True)
