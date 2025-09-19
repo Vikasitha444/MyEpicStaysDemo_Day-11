@@ -1,5 +1,7 @@
 අද මට තියෙන්නේ, Large Scle Project එකක් වෙන, MyEpicStays එක එකේ,  Seach Process එක සිදු කරන්න.
 
+*UI එක හැදුවා
+
 Search කරන Data, Templates වලට Pass කරන  විදිහ ඉගෙන ගත්තා.
 
 Forign Key භාවිතා කරන විදිහ ඉගෙන ගත්තා. Relation කිහිපයක් තියෙන
@@ -18,5 +20,5 @@ Images Display කරන විදිහ දැනගත්තා.
 * Security එක වැඩි කරන්න, නිතර Web Pages අතර දත්ත හුවමාරු වන, Tables වල IDs, UUID (Universally Unique Identifier) බවට Convert කරලා, අලුත් Column එකක Store කරන විදිහ ඉගෙන ගත්තා. මේ සඳහා, Django වල Inbuild Library එකක් තියෙනවා වගේම, අපිට මේක Manuel UUID කරලා, Store කරන්නත් පුළුවන්.
 
 
-
+*අදාල තැන වලට Pictures දැම්මා
 

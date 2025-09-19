@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Tours - Travel Booking</title>
+    <title>MyEpicStays | Find Your Best Destination</title>
+    <link rel="icon" href="https://myepicstays.com//assets/img/Symbol-01.png" type="image/png">
+
+
     <style>
         * {
             margin: 0;
@@ -18,14 +21,15 @@
         }
 
         /* Header */
-        .header {
-            background: rgba(255, 255, 255, 0.1);
+         .header {
+            
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(10px);
-        }
+            backdrop-filter: blur(15px);
+            
+         }
 
         .logo {
             display: flex;
@@ -33,13 +37,21 @@
             color: white;
             font-size: 24px;
             font-weight: bold;
+            text-decoration: none;
         }
 
-        .logo::before {
-            content: "🌍";
-            margin-right: 10px;
-            font-size: 28px;
+        .logo img {
+            height: 80px;
+            width: auto;
+            margin-right: 12px;
+            border-radius: 8px;
+            
+            padding: 5px;
+            
+            transition: all 0.3s ease;
         }
+
+        
 
         .menu-icon {
             color: white;
@@ -218,21 +230,18 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <img src="" alt="">
+        <a href="#" class="logo">
+            <img src="https://myepicstays.com/assets/img/logo.png" alt="MyEpicStays Logo">
+            
+        </a>
         <div class="menu-icon">☰</div>
     </header>
 
-    <!-- Navigation -->
-    <nav class="nav-tabs">
-        <button class="nav-tab">Hotel</button>
-        <button class="nav-tab active">Flights</button>
-        <button class="nav-tab">Experiences</button>
-    </nav>
 
     <!-- Main Content -->
     <main class="main-content">
-        <h1 class="hero-title">FIND THE BEST DESTINATION FOR TRAVEL</h1>
-        <p class="hero-subtitle">We guarantee 100% all places in our website is genuine</p>
+        <h1 class="hero-title">FIND YOUR BEST DESTINATION</h1>
+        <p class="hero-subtitle">We guarantee 100% all places in MyEpicStays are genuine</p>
         
         <!-- Search Form -->
         <div class="search-container">
@@ -271,7 +280,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="search-btn">🔍 Find</button>
+                <button type="submit" class="search-btn"> Find</button>
             </form>
         </div>
     </main>
