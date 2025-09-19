@@ -70,7 +70,9 @@ def results(request):
 
 
 
+def info(request):
 
+    return render(request, 'info.html')
 
 
    
