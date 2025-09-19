@@ -85,6 +85,11 @@ class PropertyCategories(models.Model):
     title = models.CharField(max_length=255)
     iconid = models.BigIntegerField()
     picture = models.CharField(max_length=255)
+    bedareaimage  = models.CharField(max_length=500)
+    diningareaimage  = models.CharField(max_length=500)
+    bathroomimage  = models.CharField(max_length=500)
+    roominteriorimage = models.CharField(max_length=500)
+    poolareaimage  = models.CharField(max_length=500)
     
     class Meta:
         managed = False
