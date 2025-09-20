@@ -61,6 +61,17 @@
             font-weight: 700;
             color: var(--primary);
         }
+
+        .logo img {
+            height: 80px;
+            width: auto;
+            margin-right: 12px;
+            border-radius: 8px;
+            
+            padding: 5px;
+            
+            transition: all 0.3s ease;
+        }
         
         nav ul {
             display: flex;
@@ -361,13 +372,18 @@
         
     
     <header>
-        <div class="logo">MyEpicStays</div>
+        
+        
+        <a href="#" class="logo">
+            <img src="https://myepicstays.com/assets/img/logo.png" alt="MyEpicStays Logo">
+        </a>
+        
         <nav>
             <ul>
-                <li><a href="#">ප්‍රධාන පිටුව</a></li>
-                <li><a href="#">හෝටල්</a></li>
-                <li><a href="#">ගුවන් ටිකට්</a></li>
-                <li><a href="#">ගිණුම</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Hotels</a></li>
+                <li><a href="#">Register you hotel</a></li>
+                <li><a href="#">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -456,12 +472,12 @@
         
         
             <!-- Debug Information (remove in production) -->
-    <div class="debug-info" style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
+    <!-- <div class="debug-info" style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
         <h4>Debug Info:</h4>
         <p>Total Properties: {{ all_properties|length }}</p>
         <p>Total Categories: {{ propertycategory|length }}</p>
         <p>Properties available: {% if all_properties %}Yes{% else %}No{% endif %}</p>
-    </div>
+    </div> -->
 
     <!-- Properties List -->
     {% if all_properties %}
@@ -493,14 +509,11 @@
                             </div>
                             <div class="hotel-price">
                                 <div class="price-section">
-                                    <div class="price">රු {{ property.salary|floatformat:0 }}</div>
+                                    <div class="price">රු 5000</div>
                                     <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
                                 </div>
                                 <div class="actions">
-                                    <div class="compare-checkbox">
-                                        <input type="checkbox" id="compare{{ forloop.counter }}" name="compare_properties" value="{{ property.id }}">
-                                        <label for="compare{{ forloop.counter }}">සසඳන්න</label>
-                                    </div>
+                                    
                                     <button class="select-btn" data-property-id="{{ property.id }}">තෝරන්න</button>
                                 </div>
                             </div>
@@ -511,14 +524,14 @@
         </div>
 
         <!-- Pagination (if needed) -->
-        <div class="pagination-container">
+        <!-- <div class="pagination-container">
             <div class="pagination">
                 <button class="page-btn">1</button>
                 <button class="page-btn">2</button>
                 <button class="page-btn">3</button>
                 <button class="page-btn">></button>
             </div>
-        </div>
+        </div> -->
 
     {% else %}
         <div class="no-results">
@@ -587,12 +600,12 @@
             </div> -->
         </div>
         
-        <div class="pagination">
+        <!-- <div class="pagination">
             <button class="active">1</button>
             <button>2</button>
             <button>3</button>
             <button>></button>
-        </div>
+        </div> -->
     </div>
     
     <div class="comparison-bar" id="comparison-bar">
