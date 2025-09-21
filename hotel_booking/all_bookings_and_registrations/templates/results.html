@@ -24,7 +24,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TravelEase - සරල නවාතැන් වෙන්කිරීම</title>
+    <title>MyEpicStays | Find Your Best Destination</title>
+    <link rel="icon" href="https://myepicstays.com//assets/img/Symbol-01.png" type="image/png">
     <style>
         :root {
             --primary: #4a89dc;
@@ -380,7 +381,7 @@
         
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#">Hotels</a></li>
                 <li><a href="#">Register you hotel</a></li>
                 <li><a href="#">Login</a></li>
@@ -514,7 +515,7 @@
                                 </div>
                                 <div class="actions">
                                     
-                                    <button class="select-btn" data-property-id="{{ property.id }}">තෝරන්න</button>
+                                    <a href="info?id={{ property.uuid }}"><button class="select-btn" data-property-id="{{ property.id }}">තෝරන්න</button></a>
                                 </div>
                             </div>
                         </div>
