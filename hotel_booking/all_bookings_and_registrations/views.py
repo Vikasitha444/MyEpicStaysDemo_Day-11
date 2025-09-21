@@ -19,7 +19,7 @@ from .models import (
 
 
 def home(request):
-  all_districts = Property.objects.select_related('districtid').all() 
+  all_districts = Districts.objects.all()
   context = {
       'all_districts': all_districts  
   }
@@ -44,7 +44,7 @@ def results(request):
       propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
       
       
-      all_districts = Property.objects.select_related('districtid').all() 
+      all_districts = Districts.objects.all()
       
       #මේකෙන්, Location එකට පමණක් අදාළ Results Filter කරලා ගන්නවා. 
       all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)

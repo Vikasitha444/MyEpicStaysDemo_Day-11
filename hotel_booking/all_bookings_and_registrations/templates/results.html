@@ -397,7 +397,7 @@
                     <select name="destination" class="form-input" required>
                         <option value="">Select your destination</option>
                         {% for s in all_districts %}
-                            <option value="{{ s.districtid.districtid }}">{{ s.districtid.title }}</option>
+                            <option value="{{ s.districtid }}">{{ s.title }}</option>
                         {% endfor %}
                     </select>
                 </div>
