@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from .models import (
     Property, Users, Districts,  PropertyFacilities,
     PropertyCategories, PropertyPictures, Excursions,
-    PropertyRoomCategories
+    PropertyRoomCategories, PropertyPriceDetails  
 )
 
 
@@ -29,45 +29,47 @@ def home(request):
 
 
 def results(request):
-  if request.method == 'POST':  
-      destination = request.POST.get('destination', '').strip() #මේකේ තියෙන්නේ, form එකෙන් එන, destination කියන field එකේ, value එක. මේකෙන් ගන්නේ, District එකේ ID එක.
-      startDate = request.POST.get('startDate', '').strip()
-      endDate = request.POST.get('endDate', '').strip()
-      guests = request.POST.get('guests', '').strip()
-    
-      
-      #මෙතන, Foreign Key එකක් භාවිතා කරලා, "propertycategory" table එකේ data ලබා ගන්නවා.
-      #ඒ සඳහා, select_related() method එක භාවිතා කරනවා.
-      # select_related() method එක, Foreign Key relationship එකක් ඇති fields වල data එකතු කරලා, single query එකක් තුළින් ලබා ගන්නා විදිහයි.
-      # මෙතන, 'propertycategory' කියලා තියෙන්නේ, Property Table එකේ Foreign Key field එකේ නමයි.
-      # ඒ field එක, PropertyCategories model එකට refer කරනවා.
-      propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
-      
-      
-      all_districts = Districts.objects.all()
-      
-      #මේකෙන්, Location එකට පමණක් අදාළ Results Filter කරලා ගන්නවා. 
-      all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
-      
-      
-      
-      
+    if request.method == 'POST':  
+        destination = request.POST.get('destination', '').strip() #මේකේ තියෙන්නේ, form එකෙන් එන, destination කියන field එකේ, value එක. මේකෙන් ගන්නේ, District එකේ ID එක.
+        startDate = request.POST.get('startDate', '').strip()
+        endDate = request.POST.get('endDate', '').strip()
+        guests = request.POST.get('guests', '').strip()
+        
+        
+        #මෙතන, Foreign Key එකක් භාවිතා කරලා, "propertycategory" table එකේ data ලබා ගන්නවා.
+        #ඒ සඳහා, select_related() method එක භාවිතා කරනවා.
+        # select_related() method එක, Foreign Key relationship එකක් ඇති fields වල data එකතු කරලා, single query එකක් තුළින් ලබා ගන්නා විදිහයි.
+        # මෙතන, 'propertycategory' කියලා තියෙන්නේ, Property Table එකේ Foreign Key field එකේ නමයි.
+        # ඒ field එක, PropertyCategories model එකට refer කරනවා.
+        propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
+        
+        
+        all_districts = Districts.objects.all()
+        
+        #මේකෙන්, Location එකට පමණක් අදාළ Results Filter කරලා ගන්නවා. 
+        all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
+        
+        
+        property_price_details = PropertyPriceDetails.objects.select_related('propertyid').all()
 
-      context = {
-          'destination': destination,
-          'startDate': startDate,
-          'endDate': endDate,
-          'guests': guests,
-          'all_properties': all_properties,
-          'propertycategory': propertycategory_all_related_tables
-          ,'all_districts': all_districts,
-          
-          }
+        
+
+        context = {
+            'destination': destination,
+            'startDate': startDate,
+            'endDate': endDate,
+            'guests': guests,
+            'all_properties': all_properties,
+            'propertycategory': propertycategory_all_related_tables
+            ,'all_districts': all_districts,
+            'property_price_details': property_price_details
+            
+            }
 
 
-      
-  
-      return render(request, 'results.html',context)
+        
+
+        return render(request, 'results.html', context)
     
 
 

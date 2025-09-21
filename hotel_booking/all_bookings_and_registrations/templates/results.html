@@ -358,6 +358,11 @@
     </style>
 </head>
 <body>
+    
+    <!-- {% for pr in property_price_details %}
+    <h1>{{ pr.minimum_night_price }}</h1>
+    {% endfor %} -->
+    
 
     <!-- මෙතන Forign Key එක, Table එකකට දාලා Display කරනවා-->
     <!-- <table border="1">
@@ -510,7 +515,11 @@
                             </div>
                             <div class="hotel-price">
                                 <div class="price-section">
-                                    <div class="price">රු 5000</div>
+
+                                    {% for pr in property_price_details %}
+                                    <div class="price">රු {{ pr.minimum_night_price }}</div>
+                                    {% endfor %}
+                                    
                                     <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
                                 </div>
                                 <div class="actions">

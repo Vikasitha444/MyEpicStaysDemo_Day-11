@@ -118,7 +118,7 @@ class Property(models.Model):
         db_table = 'property'
 
 
-class property_price_details(models.Model):
+class PropertyPriceDetails(models.Model):
     property_price_details_id = models.BigAutoField(primary_key=True)
     propertyid = models.ForeignKey(Property, on_delete=models.CASCADE, db_column='propertyid')
     guest_price = models.BigIntegerField()
