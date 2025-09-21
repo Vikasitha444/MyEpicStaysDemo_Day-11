@@ -22,3 +22,17 @@ Images Display කරන විදිහ දැනගත්තා.
 
 *අදාල තැන වලට Pictures දැම්මා
 
+
+
+
+
+
+
+
+
+
+2025/09/21
+අද මට තියෙන්නේ, MyEpicStaysDemo Site එකේ, Select කරන Guessලා අනුව, වෙනස් වෙන Price එක හරියට Display කරන්න.
+
+
+

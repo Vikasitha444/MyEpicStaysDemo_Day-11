@@ -423,11 +423,13 @@
     <h1>{{ property.title }}</h1> -->
 
     {% for property in  properties %}
-    {% for facilities in  property_facilities %}
+    
     <div class="container">
         <div class="property-header">
             <div>
+                {% for facilities in  property_facilities %}
                 <div class="property-category">{{ facilities.title }}</div>
+                {% endfor %}
                 <h1 class="property-title">{{ property.title }}</h1>
                 <div class="location-container">
                     <span class="location-icon">📍</span>
@@ -535,7 +537,7 @@
             </div>
         </div>
     </div>
-    {% endfor %}
+    
     {% endfor %}
 </body>
 </html>
