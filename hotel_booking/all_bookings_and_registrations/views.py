@@ -50,6 +50,9 @@ def results(request):
       all_properties  = Property.objects.select_related('districtid').filter(districtid=destination)
       
       
+      
+      
+
       context = {
           'destination': destination,
           'startDate': startDate,
