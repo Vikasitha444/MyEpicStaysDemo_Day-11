@@ -354,6 +354,20 @@
                 width: 100%;
                 height: 200px;
             }
+
+            /* Guest Charge Notice */
+            .guest-notice {
+                display: none;
+                background-color: #333;
+                margin-top: 8px;
+                color: #dc3545;
+                font-size: 13px;
+                font-weight: 500;
+            }
+
+            .guest-notice.show {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -419,7 +433,37 @@
                     <label>&nbsp;</label>
                     <button type="submit">සොයන්න</button>
                 </div>
+                <div class="form-group">
+                    <label for="check-in">පැමිණෙන දිනය</label>
+                    <select class="form-input" name="guests" id="guestSelect">
+                        <option value="">Select guests</option>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5+ Guests</option>
+                    </select>
+                    <!-- <div class="guest-notice" id="guestNotice">
+                        * Additional charges will apply
+                    </div> -->
+                </div>
+                
             </form>
+            <!-- <script>
+            // Guest selection functionality
+                const guestSelect = document.getElementById('guestSelect');
+                const guestNotice = document.getElementById('guestNotice');
+
+                guestSelect.addEventListener('change', function() {
+                    const guestCount = parseInt(this.value);
+                    
+                    if (guestCount >= 3) {
+                        guestNotice.classList.add('show');
+                    } else {
+                        guestNotice.classList.remove('show');
+                    }
+                });
+            </script>
             
             <button class="show-filters" onclick="toggleFilters()">වැඩිදුර පෙරහන් පෙන්වන්න</button>
             
@@ -454,8 +498,8 @@
                         </select>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> -->
+        </div> 
         
         <div class="results-view-options">
             <div class="view-toggle">
