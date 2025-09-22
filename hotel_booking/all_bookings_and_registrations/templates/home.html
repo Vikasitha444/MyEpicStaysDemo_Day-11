@@ -188,6 +188,19 @@
             transform: translateY(0);
         }
 
+        /* Guest Charge Notice */
+        .guest-notice {
+            display: none;
+            margin-top: 8px;
+            color: #dc3545;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .guest-notice.show {
+            display: block;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
@@ -215,6 +228,17 @@
             from {
                 opacity: 0;
                 transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
             }
             to {
                 opacity: 1;
@@ -270,7 +294,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Guests</label>
-                    <select class="form-input" name="guests">
+                    <select class="form-input" name="guests" id="guestSelect">
                         <option value="">Select guests</option>
                         <option value="1">1 Guest</option>
                         <option value="2">2 Guests</option>
@@ -278,6 +302,9 @@
                         <option value="4">4 Guests</option>
                         <option value="5">5+ Guests</option>
                     </select>
+                    <div class="guest-notice" id="guestNotice">
+                        * Additional charges will apply
+                    </div>
                 </div>
 
                 <button type="submit" class="search-btn"> Find</button>
@@ -294,15 +321,29 @@
             });
         });
 
+        // Guest selection functionality
+        const guestSelect = document.getElementById('guestSelect');
+        const guestNotice = document.getElementById('guestNotice');
+
+        guestSelect.addEventListener('change', function() {
+            const guestCount = parseInt(this.value);
+            
+            if (guestCount >= 3) {
+                guestNotice.classList.add('show');
+            } else {
+                guestNotice.classList.remove('show');
+            }
+        });
+
         // Form submission
         document.getElementById('searchForm').addEventListener('submit', function(e) {
             //e.preventDefault();
             
             // Get form data
-            const destination = this.querySelector('input[type="text"]').value;
-            const startDate = this.querySelector('input[type="date"]').value;
-            const endDate = this.querySelector('input[type="date"]').value;
-            const guests = this.querySelector('select').value;
+            const destination = this.querySelector('select[name="destination"]').value;
+            const startDate = this.querySelector('input[name="startDate"]').value;
+            const endDate = this.querySelector('input[name="endDate"]').value;
+            const guests = this.querySelector('select[name="guests"]').value;
             
             // Simple validation
             if (!destination || !startDate || !endDate) {
@@ -321,8 +362,8 @@
         });
 
         // Ensure end date is after start date
-        const startDateInput = document.querySelector('input[type="date"]');
-        const endDateInput = document.querySelectorAll('input[type="date"]')[1];
+        const startDateInput = document.querySelector('input[name="startDate"]');
+        const endDateInput = document.querySelector('input[name="endDate"]');
         
         startDateInput.addEventListener('change', function() {
             endDateInput.setAttribute('min', this.value);
