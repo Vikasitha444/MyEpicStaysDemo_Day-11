@@ -3,6 +3,7 @@ from django.template import loader
 from django.shortcuts import render
 from .models import Member, Teachers  # Import both models
 from django.db import transaction
+from datetime import datetime
 import html
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -36,6 +37,7 @@ def results(request):
         guests = request.POST.get('guests', '').strip()
         
         
+        
         #මෙතන, Foreign Key එකක් භාවිතා කරලා, "propertycategory" table එකේ data ලබා ගන්නවා.
         #ඒ සඳහා, select_related() method එක භාවිතා කරනවා.
         # select_related() method එක, Foreign Key relationship එකක් ඇති fields වල data එකතු කරලා, single query එකක් තුළින් ලබා ගන්නා විදිහයි.
@@ -53,30 +55,33 @@ def results(request):
         property_price_details = PropertyPriceDetails.objects.select_related('propertyid').all()
 
         
-        #අපි හැමෝම දන්නවා නේ, HTML Tempaltes වල පුළුවන්, Data එකක් Display කරන්න 
-        # විතරයි.
-        # මේ නිසා අපිට, View එකේ, Data ටික Process කරලා, Template එකට යවන්න වෙනවා.        
-        #මෙතැනදී කරන්නේ, "home.html" එකෙන්, User තෝරපු Hotel වල විතරක්, 
-        # Guest Price එක අරගෙන, ඒක, List එකකට එකතු කරන එක.
-        guest_price = []
-        for property in all_properties:
-            price_record = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('guest_price').first()
-            if price_record:
-                guest_price.append(price_record['guest_price'])
-            else:
-                guest_price.append(0)  
+        
 
-        #මෙතැනදී, minimum_night_price එක අරගෙන, ඒක, List එකකට එකතු කරන එක.
-        minimum_night_price = []
-        for property in all_properties:
-            price_record = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('minimum_night_price').first()
-            if price_record:
-                minimum_night_price.append(price_record['minimum_night_price'])
-            else:
-                minimum_night_price.append(0)  
 
-        #ඊට පස්සේ, ඒක Zip එකක් විදිහට එකතු කරලා Template එකට යවනවා.
-        properties_with_prices = zip(minimum_night_price, guest_price)
+
+        #මෙතැනදී, කරලා තියෙන්නේ, Total Price එක හොයන එක
+        #"Total Price = (minimum_night_price × Nights ) + Additional Guest Prices" කියන සුත්‍රය තමා මේකට භාවිතා කරන්නේ
+        #එක් එක්, Hotel එකේ, Price එක ගබඩා කිරීමට, "total_price" කියලා List එකක් හැදුවා
+        total_price = []
+        for property in all_properties:
+            additional_guests_price = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('guest_price').first()['guest_price']
+            minimum_night_price = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('minimum_night_price').first()['minimum_night_price']
+            
+            #මෙතැනදී කරලා තියෙන්නේ, හෝටලේ අවශ්‍ය දවස් ගාන හොයාගන්න එක
+            date_gap = datetime.strptime(endDate, '%Y-%m-%d') - datetime.strptime(startDate, '%Y-%m-%d')
+            number_of_nights = date_gap.days
+
+            #Guessලා ගාන 02ට වඩා වැඩි නම්, Additional Chages ගණනය කරයි.
+            if int(guests) > 2:
+                additional_guests = int(guests) - 2 #වැඩි Guessලා Count එක හොයාගන්නවා
+                additional_guests_chages = additional_guests * int(additional_guests_price) # "Additional guests Amount * Additional guest's price" මේ සුත්‍රය තමා මෙතන භාවිතා වෙන්නේ.
+            else:   
+                additional_guests_chages = 0
+            #මෙතැනදී, Total price එක ලැබෙනවා
+            total_price.append((minimum_night_price * number_of_nights) + additional_guests_chages)
+
+        properties_with_prices = total_price
+        
 
 
 

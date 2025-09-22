@@ -489,7 +489,7 @@
     {% if all_properties %}
         <div class="properties-container">
             {% for property in all_properties %}
-            {% for minimum_night_price, guest_price in properties_with_prices %}
+            {% for total_price in properties_with_prices %}
                 <div class="hotel-list">
                     <div class="hotel-card">
                         <div class="hotel-image">
@@ -516,13 +516,11 @@
                             </div>
                             <div class="hotel-price">
                                <div class="price-section">
-                                    
-                                        <div class="price">රු {{ minimum_night_price }}</div>
-                                        <div class="price">රු {{ guest_price }}</div>
-                                        
-                                    
-                                    <div class="price-details">රාත්‍රියකට, බදු ඇතුළුව</div>
+                                    <div class="price">රු {{ total_price }}</div>                                      
+                                    <div class="price-details">සම්පුර්ණ මුදල, බදු ඇතුළුව</div>
                                 </div>
+
+                               
 
                                 <div class="actions">
                                     
