@@ -64,7 +64,7 @@ def results(request):
         #එක් එක්, Hotel එකේ, Price එක ගබඩා කිරීමට, "total_price" කියලා List එකක් හැදුවා
         total_price = []
         for property in all_properties:
-            additional_guests_price = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('guest_price').first()['guest_price']
+            additional_guests_price = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('additional_guest_price').first()['additional_guest_price']
             minimum_night_price = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('minimum_night_price').first()['minimum_night_price']
             
             #මෙතැනදී කරලා තියෙන්නේ, හෝටලේ අවශ්‍ය දවස් ගාන හොයාගන්න එක
