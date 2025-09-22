@@ -53,6 +53,16 @@ def results(request):
         property_price_details = PropertyPriceDetails.objects.select_related('propertyid').all()
 
         
+        property_prices = []
+        for property in all_properties:
+            price_record = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('guest_price').first()
+            if price_record:
+                property_prices.append(price_record['guest_price'])  # Extract the actual price value
+            else:
+                property_prices.append(0)  # Default price if no record found
+
+        # Combine properties with their prices
+        properties_with_prices = zip(all_properties, property_prices)
 
         context = {
             'destination': destination,
@@ -60,11 +70,11 @@ def results(request):
             'endDate': endDate,
             'guests': guests,
             'all_properties': all_properties,
-            'propertycategory': propertycategory_all_related_tables
-            ,'all_districts': all_districts,
-            'property_price_details': property_price_details
-            
-            }
+            'propertycategory': propertycategory_all_related_tables,
+            'all_districts': all_districts,
+            'property_prices': property_prices,
+            'properties_with_prices': properties_with_prices
+        }
 
 
         
