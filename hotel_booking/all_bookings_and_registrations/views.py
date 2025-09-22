@@ -53,16 +53,35 @@ def results(request):
         property_price_details = PropertyPriceDetails.objects.select_related('propertyid').all()
 
         
-        property_prices = []
+        #අපි හැමෝම දන්නවා නේ, HTML Tempaltes වල පුළුවන්, Data එකක් Display කරන්න 
+        # විතරයි.
+        # මේ නිසා අපිට, View එකේ, Data ටික Process කරලා, Template එකට යවන්න වෙනවා.        
+        #මෙතැනදී කරන්නේ, "home.html" එකෙන්, User තෝරපු Hotel වල විතරක්, 
+        # Guest Price එක අරගෙන, ඒක, List එකකට එකතු කරන එක.
+        guest_price = []
         for property in all_properties:
             price_record = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('guest_price').first()
             if price_record:
-                property_prices.append(price_record['guest_price'])  # Extract the actual price value
+                guest_price.append(price_record['guest_price'])
             else:
-                property_prices.append(0)  # Default price if no record found
+                guest_price.append(0)  
 
-        # Combine properties with their prices
-        properties_with_prices = zip(all_properties, property_prices)
+        #මෙතැනදී, minimum_night_price එක අරගෙන, ඒක, List එකකට එකතු කරන එක.
+        minimum_night_price = []
+        for property in all_properties:
+            price_record = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('minimum_night_price').first()
+            if price_record:
+                minimum_night_price.append(price_record['minimum_night_price'])
+            else:
+                minimum_night_price.append(0)  
+
+        #ඊට පස්සේ, ඒක Zip එකක් විදිහට එකතු කරලා Template එකට යවනවා.
+        properties_with_prices = zip(minimum_night_price, guest_price)
+
+
+
+
+
 
         context = {
             'destination': destination,
@@ -72,7 +91,6 @@ def results(request):
             'all_properties': all_properties,
             'propertycategory': propertycategory_all_related_tables,
             'all_districts': all_districts,
-            'property_prices': property_prices,
             'properties_with_prices': properties_with_prices
         }
 
