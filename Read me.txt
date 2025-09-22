@@ -37,4 +37,23 @@ Images Display කරන විදිහ දැනගත්තා.
 
 - මේකෙදි මම දැනගත්ත්තා මුලින්ම, HTML Templates වල වෙන්නේ, Display කරන Process එක විතරයි. එහෙනම් කොහොමද, Hotel එකකට අනන්‍ය වෙච්ච, Price එක, Price Table එකෙන් අරගෙන, Template එකක Display කරන්නේ කියලා?
 
-- මොකද, Hotel එකේ, ID එක අනුව, Price එක Display වෙන්න Logic එක HTML Template එකක ලියලා හරියන්නේ නෑ.  මේකට, Logic එක Views.py එකේ, ලියලා, ඒක Zip කරලා, Template 
+- මොකද, Hotel එකේ, ID එක අනුව, Price එක Display වෙන්න Logic එක HTML Template එකක ලියලා හරියන්නේ නෑ.  
+
+මේකට, Logic එක Views.py එකේම, ලියලා, ඒක Zip කරලා, Template 
+එකට ගෙන්න ඕනේ.
+
+#Evidences docx එක බැලුවම තේරෙයි වැඩේ.
+
+
+
+
+
+
+*Hotel එක්ක, කාමරයක මිල තීරණය වෙන්න බලපාන සාධක මොනවද කියලා ඉගෙන ගත්තා.
+
+*Total Price = (minimum_night_price × Nights ) + Additional Guest Prices" කියන සුත්‍රය තමා මේකට භාවිතා කරන්නේ. Guestලා ගාන 2ට වඩා වැඩි වුනොත්, Hotel එක අනුව, Additional Guest Prices අය කරනවා
+* මේ හොයාගත්තු Total price එක, List එකක් විදිහට, Template එකට යවන විදිහ හොයාගත්තා.
+
+
+
+

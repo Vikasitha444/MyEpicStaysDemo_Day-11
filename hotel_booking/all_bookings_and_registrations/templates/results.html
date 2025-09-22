@@ -488,8 +488,8 @@
     <!-- Properties List -->
     {% if all_properties %}
         <div class="properties-container">
-            {% for property in all_properties %}
-            {% for total_price in properties_with_prices %}
+            {% for total_price, property in all_in_one %}
+            
                 <div class="hotel-list">
                     <div class="hotel-card">
                         <div class="hotel-image">
@@ -530,7 +530,7 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                
             {% endfor %}
         </div>
 
@@ -543,6 +543,7 @@
                 <button class="page-btn">></button>
             </div>
         </div> -->
+
 
     {% else %}
         <div class="no-results">

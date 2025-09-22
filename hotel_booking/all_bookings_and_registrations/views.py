@@ -81,10 +81,11 @@ def results(request):
             total_price.append((minimum_night_price * number_of_nights) + additional_guests_chages)
 
         properties_with_prices = total_price
+        print(properties_with_prices)
+
         
-
-
-
+        #මෙතැනදී, ලේසි වෙන්න, total_price එකයි,  "all_properties" ටිකයි, එකක් විදිහට එකතු කරලා, Template එකට යවනවා.
+        all_in_one = zip(total_price,all_properties)
 
 
 
@@ -96,7 +97,8 @@ def results(request):
             'all_properties': all_properties,
             'propertycategory': propertycategory_all_related_tables,
             'all_districts': all_districts,
-            'properties_with_prices': properties_with_prices
+            'properties_with_prices': properties_with_prices,
+            'all_in_one': all_in_one
         }
 
 
