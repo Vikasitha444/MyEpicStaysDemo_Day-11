@@ -532,8 +532,7 @@
     <!-- Properties List -->
     {% if all_properties %}
         <div class="properties-container">
-            {% for total_price, property in all_in_one %}
-            
+            {% for total_price, property in all_in_one %}    
                 <div class="hotel-list">
                     <div class="hotel-card">
                         <div class="hotel-image">
@@ -544,7 +543,7 @@
                             {% endif %}
                         </div>
                         <div class="hotel-details">
-                            <h3 class="hotel-name"><a href="info?id={{ property.uuid }}">{{ property.title }}</a></h3>
+                            <h3 class="hotel-name"><a href="info?id={{ property.uuid }}&nights={{ number_of_nights }}&guests={{ guests }}">{{ property.title }}</a></h3>
                             <div class="hotel-location">
                                 <i class="location-icon">📍</i>
                                 <span>{{ property.address|default:"ලිපිනය නොමැත" }}</span>
@@ -568,7 +567,7 @@
 
                                 <div class="actions">
                                     
-                                    <a href="info?id={{ property.uuid }}"><button class="select-btn" data-property-id="{{ property.id }}">තෝරන්න</button></a>
+                                    <a href="info?id={{ property.uuid }}&nights={{ number_of_nights }}&guests={{ guests }}"><button class="select-btn" data-property-id="{{ property.id }}">තෝරන්න</button></a>
                                 </div>
                             </div>
                         </div>

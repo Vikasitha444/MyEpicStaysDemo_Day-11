@@ -98,6 +98,7 @@ def results(request):
             'propertycategory': propertycategory_all_related_tables,
             'all_districts': all_districts,
             'properties_with_prices': properties_with_prices,
+            'number_of_nights': number_of_nights, # මේකෙන්, Nights ගණන Template එකට යවනවා, මොකද, ආයේ ඒ Value එක "info.html" එකේ ගණනය කරන්න ඕනෙ නිසා.
             'all_in_one': all_in_one
         }
 
@@ -112,6 +113,8 @@ def results(request):
 
 def info(request):    
     uuid_of_the_clicked_hotel = request.GET.get('id', '').strip()
+    nights = request.GET.get('nights', '').strip()
+    guests = request.GET.get('guests', '').strip()
     
     
     properties = Property.objects.select_related('propertycategory','districtid').filter(uuid = uuid_of_the_clicked_hotel)
@@ -119,9 +122,38 @@ def info(request):
     
     propertyid_extraction_from_uuid = Property.objects.filter(uuid = uuid_of_the_clicked_hotel).values('propertyid')
     property_facilities = PropertyFacilities.objects.filter(propertyid = propertyid_extraction_from_uuid[0]['propertyid'])
+    
+    #මේකෙදි, "propertyid_extraction_from_uuid" value එක Int එකක් කරනවා.
+    propertyid_extraction_from_uuid = int(propertyid_extraction_from_uuid[0]['propertyid'])
+    
+
+    minimum_night_price = PropertyPriceDetails.objects.filter(propertyid=propertyid_extraction_from_uuid).values('minimum_night_price').first()['minimum_night_price']
+    additional_guests_price = PropertyPriceDetails.objects.filter(propertyid=propertyid_extraction_from_uuid).values('additional_guest_price').first()['additional_guest_price']
+
+    
+
+    #මෙතැනදී, කරලා තියෙන්නේ, Total Price එක හොයන එක
+    #"Total Price = (minimum_night_price × Nights ) + Additional Guest Prices" කියන සුත්‍රය තමා මේකට භාවිතා කරන්නේ
+    #ආයේ ගාන මෙතන හැදුවා, GET Methords වලින් යවලා Security එක අඩු වෙන නිසා
+    total_price = 0
+    if int(guests) > 2: 
+        additional_guests = int(guests) - 2 #වැඩි Guessලා Count එක හොයාගන්නවා
+        additional_guests_chages = additional_guests * int(additional_guests_price) # "Additional guests Amount * Additional guest's price" මේ සුත්‍රය තමා මෙතන භාවිතා වෙන්නේ.  
+        total_price = (minimum_night_price * int(nights)) + additional_guests_chages
+    else:   
+        total_price = (minimum_night_price * int(nights)) + 0
+    
+
+
     context = {
         'properties': properties,
-        'property_facilities': property_facilities
+        'property_facilities': property_facilities,
+        'minimum_night_price': minimum_night_price,
+        'additional_guests_chages': additional_guests_chages,
+        'nights': nights,
+        'total_price': total_price,
+        'guests': guests,
+        'additional_guests_price': additional_guests_price
     }   
     return render(request, 'info.html', context)
     

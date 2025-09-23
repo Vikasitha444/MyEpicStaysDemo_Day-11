@@ -499,12 +499,14 @@
 
         .amenities {
             display: grid;
+            flex-direction: column;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
+            
         }
 
         .amenity {
-            font-size: 12px;
+            font-size: 15px;
             color: #333;
         }
 
@@ -808,7 +810,7 @@
 
     <div class="container_2">
         <!-- Room Option 1 -->
-        <div class="room-card">
+        <!-- <div class="room-card">
             <div class="room-header">
                 <h3 class="room-title">Twin Room with Shared Bathroom</h3>
                 <span class="last-room">අවසන් කාමරය!</span>
@@ -851,52 +853,61 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Room Option 2 -->
         <div class="room-card">
             <div class="room-header">
-                <h3 class="room-title">Deluxe Room with Private Bathroom</h3>
+                <h3 class="room-title">HOTEL TICKET</h3>
             </div>
 
             <div class="room-content">
                 <div class="room-details">
-                    <div class="details-title">පහසුකම්:</div>
+                    <div class="details-title"><h4>All Price Details:</h4></div>
+                    <br>
                     <div class="amenities">
-                        <div class="amenity">• ඇඳන් 2 (තනි ඇඳන්)</div>
-                        <div class="amenity">• නොමිලේ WiFi</div>
-                        <div class="amenity">• 20m² කාමර ප්‍රමාණය</div>
-                        <div class="amenity">• වායුසමීකරණය</div>
-                        <div class="amenity">• පෞද්ගලික නාන කාමරය</div>
-                        <div class="amenity">• තවත් +12</div>
+                        <b><div class="original-price">සාමාන්‍ය මිල (For 1 night)</div></b>
+                        <b><div class="original-price">LKR {{ minimum_night_price }}</div></b>
+                        <b><div class="original-price">Nights </div></b>
+                        <b><div class="original-price">{{ nights }} Nights</div></b>
+                        <b><div class="original-price">For Additional 1 Guest </div></b>
+                        <b><div class="original-price">LKR {{ additional_guests_price }} </div></b>
+                        <b><div class="original-price">Total Guests </div></b>
+                        <b><div class="original-price">{{ guests }} People</div></b>
+                        <b><div class="original-price">Total Guest Charges </div></b>
+                        <b><div class="original-price">LKR {{ additional_guests_chages }}+ <font color="crimson">(For 3 or more people)</font></div> </b>
+                        
+                        
+
+                        <!-- <div class="amenity"><h4>For one Night (With food) :-  </h4> </div>
+                        <div class="amenity"><h4>5000 LKR </h4> </div>
+                        <div class="amenity"><h4>Additional Guest Chagers </h4> </div>
+                        <div class="amenity"><h4>1500 LKR </h4> </div> -->
+                        
                     </div>
-                    <button class="more-details-btn" onclick="showMoreDetails(2)">තවත් විස්තර බලන්න</button>
+                    
                 </div>
 
                 <div class="price-section">
-                    <div class="original-price">
-                        සාමාන්‍ය මිල: <span class="strike-through">LKR 7,775</span>
-                    </div>
+                    
                     <div class="current-price">
-                        LKR 5,831 <span class="discount">25% වට්ටම්!</span>
+                        LKR {{ total_price }} <span class="discount">25% වට්ටම්!</span>
                     </div>
                     <div class="tax-info">
-                        (+LKR 583 බදු සහ ගාස්තු) <span class="info-icon" onclick="showTaxBreakdown()">i</span>
+                        (බදු සහ ගාස්තු සහිතව) <span class="info-icon" onclick="showTaxBreakdown()">i</span>
                     </div>
-                    <div class="meal-info">• ආහාර වේල ඇතුළත්</div>
                     <div class="meal-info">• පෙර ගෙවීමක් අවශ්‍ය නැත</div>
-
-                    <div class="room-selector">
-                        <label>කාමර ගණන:</label>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity(2, -1)">−</button>
-                            <span class="quantity-display" id="room2-qty">0</span>
-                            <button class="quantity-btn" onclick="changeQuantity(2, 1)">+</button>
-                        </div>
-                    </div>
+                    <div class="meal-info">• තහවුරු කිරීමට ඔබට ඇමතුමක් ලැබෙනු ඇත.</div>
+                    <div class="meal-info">• Creadit and debit cards are valid</div>
+                    <div class="meal-info">• 24 hours refunding policy available</div>
+                    
                 </div>
+                
             </div>
         </div>
+
+
+        
 
         <div class="action-buttons">
             <button class="btn btn-secondary" onclick="goBack()">ආපසු යන්න</button>
