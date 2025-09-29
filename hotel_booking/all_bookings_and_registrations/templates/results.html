@@ -1,23 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-    <h1>Search Results</h1>
-    <p>Destination: {{ destination }}</p>
-    <p>Start Date: {{ startDate }}</p>
-    <p>End Date: {{ endDate }}</p>
-    <p>Guests: {{ guests }}</p>
-
-</body>
-</html> -->
-
-
-
 
 <!DOCTYPE html>
 <html lang="si">
@@ -26,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyEpicStays | Find Your Best Destination</title>
     <link rel="icon" href="https://myepicstays.com//assets/img/Symbol-01.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <style>
         :root {
             --primary: #4a89dc;
@@ -369,6 +350,11 @@
                 display: block;
             }
         }
+
+        #map { 
+            height: 500px; 
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -501,10 +487,10 @@
             </div> -->
         </div> 
         
-        <div class="results-view-options">
+         <div class="results-view-options">
             <div class="view-toggle">
-                <button class="active">ලැයිස්තුව</button>
-                <button>සිතියම</button>
+                <button id="listViewBtn" class="active" onclick="switchToListView()">ලැයිස්තුව</button>
+                <button id="mapViewBtn" onclick="switchToMapView()">සිතියම</button>
             </div>
             
             <div class="sort-options">
@@ -531,6 +517,7 @@
 
     <!-- Properties List -->
     {% if all_properties %}
+    <div id="listView" class="list-view">
         <div class="properties-container">
             {% for total_price, property in all_in_one %}    
                 <div class="hotel-list">
@@ -576,7 +563,14 @@
                 
             {% endfor %}
         </div>
-
+    </div> 
+    
+    <!-- Map View Container -->
+    <div id="mapView" class="map-view">
+        <div id="map"></div>
+    </div>
+   
+    
         <!-- Pagination (if needed) -->
         <!-- <div class="pagination-container">
             <div class="pagination">
@@ -677,6 +671,9 @@
         <button>සසඳන්න</button>
     </div>
     
+    <!-- Leaflet JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    
     <script>
         // Toggle advanced filters
         function toggleFilters() {
@@ -702,6 +699,42 @@
                 }
             });
         });
+
+        function switchToListView() {
+            document.getElementById('mapView').style.display = 'none';
+            document.getElementById('listView').style.display = 'block';
+            document.getElementById('listViewBtn').classList.add('active');
+            document.getElementById('mapViewBtn').classList.remove('active');
+        }
+
+        function switchToMapView() {
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('mapView').style.display = 'block';
+            document.getElementById('mapViewBtn').classList.add('active');
+            document.getElementById('listViewBtn').classList.remove('active');
+        }
     </script>
+
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Map එක create කරනවා
+        var map = L.map('map').setView([7.8731, 80.7718], 8);
+
+        // Map tiles add කරනවා
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Markers add කරනවා
+        L.marker([6.9271, 79.8612]).addTo(map)
+            .bindPopup('කොළඹ හෝටලය');
+
+        L.marker([7.2906, 80.6337]).addTo(map)
+            .bindPopup('කැන්ඩි හෝටලය');
+
+        L.marker([6.0329, 80.217]).addTo(map)
+            .bindPopup('ගාල්ල හෝටලය');
+    </script>
+    
+    
 </body>
 </html>

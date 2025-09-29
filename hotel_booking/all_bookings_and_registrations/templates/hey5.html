@@ -3,449 +3,730 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>නවාතැන් වෙන්කිරීම</title>
+    <title>MyEpicStays | Find Your Best Destination</title>
+    <link rel="icon" href="https://myepicstays.com//assets/img/Symbol-01.png" type="image/png">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <style>
+        :root {
+            --primary: #4a89dc;
+            --secondary: #5cb85c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #f0f0f0;
+            --text: #333;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
+            background-color: var(--light);
+            color: var(--text);
         }
-
-        .header {
-            background-color: #003580;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            margin: 20px;
+        
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: flex;
+            justify-content: space-between;
             align-items: center;
         }
-
-        .header h1 {
-            font-size: 20px;
-            font-weight: bold;
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
         }
 
-        .tab-selection {
-            background-color: #f0f3f7;
-            margin: 0 20px;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .tab {
-            padding: 8px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
+        .logo img {
+            height: 80px;
+            width: auto;
+            margin-right: 12px;
+            border-radius: 8px;
+            padding: 5px;
             transition: all 0.3s ease;
         }
-
-        .tab.active {
-            background-color: white;
-            border: 2px solid #003580;
-            color: #003580;
-            font-weight: bold;
+        
+        nav ul {
+            display: flex;
+            list-style: none;
         }
-
-        .tab.inactive {
-            background-color: #e9f0fa;
-            border: 1px solid #8fa6c0;
-            color: #003580;
+        
+        nav ul li {
+            margin-left: 1.5rem;
         }
-
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+        }
+        
         .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
-
-        .room-card {
-            background: white;
-            border: 1px solid #d6e0ec;
+        
+        .search-container {
+            background-color: white;
             border-radius: 8px;
-            margin: 20px 0;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input, select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #3a79cc;
+        }
+        
+        .results-view-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .view-toggle {
+            display: flex;
+        }
+        
+        .view-toggle button {
+            background-color: white;
+            color: var(--text);
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+        }
+        
+        .view-toggle button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .view-toggle button:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .view-toggle button:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .sort-options select {
+            padding: 0.5rem;
+        }
+        
+        /* Content containers */
+        .content-container {
+            display: flex;
+            gap: 1rem;
+            height: 600px;
         }
 
-        .room-header {
+        .hotel-list-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .map-container {
+            flex: 1;
+            display: none;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .map-container.active {
+            display: block;
+        }
+
+        .content-container.map-view .hotel-list-container {
+            flex: 0.4;
+        }
+
+        .content-container.map-view .map-container {
+            flex: 0.6;
+            display: block;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .hotel-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .hotel-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .hotel-card.highlight {
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(74, 137, 220, 0.3);
+        }
+        
+        .hotel-image {
+            width: 200px;
+            height: 150px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .hotel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hotel-details {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hotel-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hotel-location {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            color: #666;
+            margin-bottom: 0.5rem;
         }
 
-        .room-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #0071c2;
+        .hotel-category {
+            margin-bottom: 0.5rem;
         }
 
-        .last-room {
-            background-color: #ff4c4c;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
+        .category-badge {
+            background-color: var(--gray);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
-
-        .room-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            align-items: start;
+        
+        .hotel-amenities {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
         }
-
-        .room-details {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        .details-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .amenities {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
+        
         .amenity {
-            font-size: 12px;
-            color: #333;
+            background-color: var(--gray);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 0.4rem;
+            margin-bottom: 0.3rem;
         }
-
-        .price-section {
-            background-color: #ebf3ff;
-            padding: 15px;
-            border-radius: 5px;
+        
+        .hotel-price {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
-
-        .original-price {
-            font-size: 14px;
+        
+        .price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .price-details {
+            font-size: 0.75rem;
             color: #666;
         }
 
-        .strike-through {
-            text-decoration: line-through;
+        .select-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Custom popup styles */
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .current-price {
-            font-size: 18px;
+        .hotel-popup {
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .hotel-popup img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .hotel-popup h4 {
+            margin: 8px 0 4px 0;
+            color: var(--primary);
+        }
+
+        .hotel-popup .price {
+            font-size: 1.1rem;
             font-weight: bold;
-            color: #0071c2;
-            margin: 5px 0;
-        }
-
-        .discount {
-            color: #007e33;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .tax-info {
-            font-size: 12px;
-            color: #333;
-            margin: 8px 0;
-        }
-
-        .meal-info {
-            font-size: 12px;
-            color: #333;
+            color: var(--primary);
             margin: 4px 0;
         }
 
-        .room-selector {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .room-selector label {
-            font-size: 14px;
-            color: #0071c2;
-        }
-
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            border: 1px solid #0071c2;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .quantity-btn {
-            background: white;
+        .hotel-popup button {
+            background-color: var(--primary);
+            color: white;
             border: none;
-            color: #0071c2;
-            width: 30px;
-            height: 30px;
+            padding: 6px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 0.9rem;
         }
 
-        .quantity-btn:hover {
-            background: #f0f3f7;
-        }
-
-        .quantity-display {
-            padding: 0 15px;
-            font-size: 14px;
-            color: #0071c2;
-            min-width: 40px;
+        .no-results {
             text-align: center;
+            padding: 2rem;
+            color: #666;
         }
-
-        .more-details-btn {
-            background: white;
-            border: 1px solid #0071c2;
-            color: #0071c2;
-            padding: 8px 16px;
-            border-radius: 15px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .more-details-btn:hover {
-            background: #f0f3f7;
-        }
-
-        .info-icon {
-            background: #0071c2;
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin: 30px 0;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            max-width: 180px;
-        }
-
-        .btn-secondary {
-            background: white;
-            border: 1px solid #0071c2;
-            color: #0071c2;
-        }
-
-        .btn-secondary:hover {
-            background: #f0f3f7;
-        }
-
-        .btn-primary {
-            background: #0071c2;
-            border: none;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #005a9e;
-        }
-
+        
         @media (max-width: 768px) {
-            .room-content {
+            .search-form {
                 grid-template-columns: 1fr;
             }
             
-            .container {
-                padding: 0 10px;
+            .content-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .hotel-list-container {
+                height: 400px;
+            }
+
+            .map-container {
+                height: 400px;
+            }
+
+            .content-container.map-view .hotel-list-container,
+            .content-container.map-view .map-container {
+                flex: 1;
             }
             
-            .header {
-                margin: 10px;
+            .hotel-card {
+                flex-direction: column;
             }
             
-            .tab-selection {
-                margin: 0 10px;
+            .hotel-image {
+                width: 100%;
+                height: 200px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Booking.com</h1>
-    </div>
-
-    <div class="tab-selection">
-        <div class="tab active">නවාතැන් කාමර</div>
-        <div class="tab inactive">ඇඳන්</div>
-    </div>
-
+    <header>
+        <a href="#" class="logo">
+            <img src="https://myepicstays.com/assets/img/logo.png" alt="MyEpicStays Logo">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="#">Hotels</a></li>
+                <li><a href="#">Register you hotel</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    
     <div class="container">
-        <!-- Room Option 1 -->
-        <div class="room-card">
-            <div class="room-header">
-                <h3 class="room-title">Twin Room with Shared Bathroom</h3>
-                <span class="last-room">අවසන් කාමරය!</span>
+        <div class="search-container">
+            <form class="search-form" method="post">
+                <div class="form-group">
+                    <label for="destination">ස්ථානය</label>
+                    <select name="destination" class="form-input" required>
+                        <option value="">Select your destination</option>
+                        <option value="1">කොළඹ</option>
+                        <option value="2">ගම්පහ</option>
+                        <option value="3">කළුතර</option>
+                        <option value="4">කැන්ඩි</option>
+                        <option value="5">මාතර</option>
+                        <option value="6">ගාල්ල</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="check-in">පැමිණෙන දිනය</label>
+                    <input type="date" name="startDate" id="check-in">
+                </div>
+                <div class="form-group">
+                    <label for="check-out">පිටත්වන දිනය</label>
+                    <input type="date" name="endDate" id="check-out">
+                </div>
+                <div class="form-group">
+                    <label for="guests">අමුත්තන්</label>
+                    <select class="form-input" name="guests" id="guestSelect">
+                        <option value="">Select guests</option>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5+ Guests</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button type="button" onclick="searchHotels()">සොයන්න</button>
+                </div>
+            </form>
+        </div> 
+        
+        <div class="results-view-options">
+            <div class="view-toggle">
+                <button id="listView" class="active" onclick="switchView('list')">ලැයිස්තුව</button>
+                <button id="mapView" onclick="switchView('map')">සිතියම</button>
             </div>
-
-            <div class="room-content">
-                <div class="room-details">
-                    <div class="details-title">පහසුකම්:</div>
-                    <div class="amenities">
-                        <div class="amenity">• ඇඳන් 2 (තනි ඇඳන්)</div>
-                        <div class="amenity">• නොමිලේ WiFi</div>
-                        <div class="amenity">• 16m² කාමර ප්‍රමාණය</div>
-                        <div class="amenity">• පොදු නාන කාමරය</div>
-                        <div class="amenity">• වායුසමීකරණය</div>
-                        <div class="amenity">• තවත් +8</div>
-                    </div>
-                    <button class="more-details-btn" onclick="showMoreDetails(1)">තවත් විස්තර බලන්න</button>
-                </div>
-
-                <div class="price-section">
-                    <div class="original-price">
-                        සාමාන්‍ය මිල: <span class="strike-through">LKR 6,818</span>
-                    </div>
-                    <div class="current-price">
-                        LKR 5,113 <span class="discount">25% වට්ටම්!</span>
-                    </div>
-                    <div class="tax-info">
-                        (+LKR 511 බදු සහ ගාස්තු) <span class="info-icon" onclick="showTaxBreakdown()">i</span>
-                    </div>
-                    <div class="meal-info">• හොඳ ආහාර වේල - LKR 1,017</div>
-                    <div class="meal-info">• පෙර ගෙවීමක් අවශ්‍ය නැත</div>
-
-                    <div class="room-selector">
-                        <label>කාමර ගණන:</label>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity(1, -1)">−</button>
-                            <span class="quantity-display" id="room1-qty">1</span>
-                            <button class="quantity-btn" onclick="changeQuantity(1, 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Room Option 2 -->
-        <div class="room-card">
-            <div class="room-header">
-                <h3 class="room-title">Deluxe Room with Private Bathroom</h3>
-            </div>
-
-            <div class="room-content">
-                <div class="room-details">
-                    <div class="details-title">පහසුකම්:</div>
-                    <div class="amenities">
-                        <div class="amenity">• ඇඳන් 2 (තනි ඇඳන්)</div>
-                        <div class="amenity">• නොමිලේ WiFi</div>
-                        <div class="amenity">• 20m² කාමර ප්‍රමාණය</div>
-                        <div class="amenity">• වායුසමීකරණය</div>
-                        <div class="amenity">• පෞද්ගලික නාන කාමරය</div>
-                        <div class="amenity">• තවත් +12</div>
-                    </div>
-                    <button class="more-details-btn" onclick="showMoreDetails(2)">තවත් විස්තර බලන්න</button>
-                </div>
-
-                <div class="price-section">
-                    <div class="original-price">
-                        සාමාන්‍ය මිල: <span class="strike-through">LKR 7,775</span>
-                    </div>
-                    <div class="current-price">
-                        LKR 5,831 <span class="discount">25% වට්ටම්!</span>
-                    </div>
-                    <div class="tax-info">
-                        (+LKR 583 බදු සහ ගාස්තු) <span class="info-icon" onclick="showTaxBreakdown()">i</span>
-                    </div>
-                    <div class="meal-info">• ආහාර වේල ඇතුළත්</div>
-                    <div class="meal-info">• පෙර ගෙවීමක් අවශ්‍ය නැත</div>
-
-                    <div class="room-selector">
-                        <label>කාමර ගණන:</label>
-                        <div class="quantity-control">
-                            <button class="quantity-btn" onclick="changeQuantity(2, -1)">−</button>
-                            <span class="quantity-display" id="room2-qty">0</span>
-                            <button class="quantity-btn" onclick="changeQuantity(2, 1)">+</button>
-                        </div>
-                    </div>
-                </div>
+            
+            <div class="sort-options">
+                <select>
+                    <option>ඔබට වඩාත් සුදුසු</option>
+                    <option>මිල - අඩුම සිට වැඩිම</option>
+                    <option>මිල - වැඩිම සිට අඩුම</option>
+                    <option>ශ්‍රේණිගත කිරීම - ඉහළම</option>
+                </select>
             </div>
         </div>
 
-        <div class="action-buttons">
-            <button class="btn btn-secondary" onclick="goBack()">ආපසු යන්න</button>
-            <button class="btn btn-primary" onclick="bookRooms()">වෙන් කරන්න</button>
+        <div class="content-container" id="contentContainer">
+            <div class="hotel-list-container">
+                <div class="hotel-list" id="hotelList">
+                    <!-- Hotels will be populated here -->
+                </div>
+                <div class="no-results" id="noResults" style="display: none;">
+                    <h3>කිසිදු හෝටලයක් නොමැත</h3>
+                    <p>කරුණාකර ස්ථානයක් තෝරා සොයන්න</p>
+                </div>
+            </div>
+            
+            <div class="map-container" id="mapContainer">
+                <div id="map"></div>
+            </div>
         </div>
     </div>
-
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    
     <script>
-        function changeQuantity(roomId, change) {
-            const qtyElement = document.getElementById(`room${roomId}-qty`);
-            let currentQty = parseInt(qtyElement.textContent);
-            let newQty = Math.max(0, currentQty + change);
-            qtyElement.textContent = newQty;
+        let map;
+        let markers = [];
+        let currentView = 'list';
+        
+        // Sample hotel data (this would come from your Django backend)
+        const sampleHotels = [
+            {
+                id: 1,
+                title: "සිංහරාජ රිසෝට්",
+                address: "රත්නපුර",
+                category: "රිසෝට්",
+                price: 12500,
+                lat: 6.4138,
+                lng: 80.4164,
+                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300&h=200&fit=crop"
+            },
+            {
+                id: 2,
+                title: "ගල්වල රිසෝට්",
+                address: "නුවරඑළිය",
+                category: "හෝටලය",
+                price: 8900,
+                lat: 6.9497,
+                lng: 80.7891,
+                image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=300&h=200&fit=crop"
+            },
+            {
+                id: 3,
+                title: "මුහුදු තරණය",
+                address: "ගාල්ල",
+                category: "බීච් රිසෝට්",
+                price: 15750,
+                lat: 6.0329,
+                lng: 80.217,
+                image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=300&h=200&fit=crop"
+            },
+            {
+                id: 4,
+                title: "කන්ද උඩ විලා",
+                address: "කැන්ඩි",
+                category: "විලා",
+                price: 18500,
+                lat: 7.2906,
+                lng: 80.6337,
+                image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=300&h=200&fit=crop"
+            },
+            {
+                id: 5,
+                title: "කොළඹ සිටි හෝටලය",
+                address: "කොළඹ",
+                category: "සිටි හෝටලය",
+                price: 22000,
+                lat: 6.9271,
+                lng: 79.8612,
+                image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=300&h=200&fit=crop"
+            }
+        ];
+
+        let currentHotels = [];
+
+        // Initialize map
+        function initMap() {
+            map = L.map('map').setView([7.8731, 80.7718], 8); // Center of Sri Lanka
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
         }
 
-        function showMoreDetails(roomId) {
-            alert(`කාමර ${roomId} සඳහා වැඩි විස්තර පෙන්වනු ඇත`);
+        // Add markers to map
+        function addMarkersToMap(hotels) {
+            // Clear existing markers
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+
+            hotels.forEach(hotel => {
+                const marker = L.marker([hotel.lat, hotel.lng]).addTo(map);
+                
+                const popupContent = `
+                    <div class="hotel-popup">
+                        <img src="${hotel.image}" alt="${hotel.title}">
+                        <h4>${hotel.title}</h4>
+                        <p>${hotel.address}</p>
+                        <p class="price">රු ${hotel.price.toLocaleString()}</p>
+                        <button onclick="selectHotel(${hotel.id})">තෝරන්න</button>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                
+                // Add click event to highlight corresponding hotel card
+                marker.on('click', function() {
+                    highlightHotelCard(hotel.id);
+                });
+                
+                markers.push(marker);
+            });
+
+            // Fit map bounds to show all markers
+            if (markers.length > 0) {
+                const group = new L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
         }
 
-        function showTaxBreakdown() {
-            alert('බදු විස්තරය:\n• VAT: 12%\n• Service Charge: 10%\n• City Tax: LKR 100');
-        }
-
-        function goBack() {
-            alert('ආපසු යනවා...');
-        }
-
-        function bookRooms() {
-            const room1Qty = parseInt(document.getElementById('room1-qty').textContent);
-            const room2Qty = parseInt(document.getElementById('room2-qty').textContent);
+        // Render hotel list
+        function renderHotels(hotels) {
+            const hotelList = document.getElementById('hotelList');
+            const noResults = document.getElementById('noResults');
             
-            if (room1Qty === 0 && room2Qty === 0) {
-                alert('කරුණාකර අවම වශයෙන් එක් කාමරයක් තෝරන්න');
+            if (hotels.length === 0) {
+                hotelList.style.display = 'none';
+                noResults.style.display = 'block';
                 return;
             }
             
-            let message = 'වෙන්කිරීම් තහවුරු කරනවා:\n';
-            if (room1Qty > 0) {
-                message += `• Twin Room: ${room1Qty} කාමර\n`;
+            hotelList.style.display = 'block';
+            noResults.style.display = 'none';
+            
+            hotelList.innerHTML = hotels.map(hotel => `
+                <div class="hotel-card" data-hotel-id="${hotel.id}" onclick="focusHotelOnMap(${hotel.id})">
+                    <div class="hotel-image">
+                        <img src="${hotel.image}" alt="${hotel.title}">
+                    </div>
+                    <div class="hotel-details">
+                        <h3 class="hotel-name">${hotel.title}</h3>
+                        <div class="hotel-location">
+                            <span>📍 ${hotel.address}</span>
+                        </div>
+                        <div class="hotel-category">
+                            <span class="category-badge">${hotel.category}</span>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity">පිහිනුම් තටාකය</span>
+                            <span class="amenity">නොමිලේ Wi-Fi</span>
+                            <span class="amenity">ආහාර පාන</span>
+                            <span class="amenity">ඒසී</span>
+                        </div>
+                        <div class="hotel-price">
+                            <div class="price-section">
+                                <div class="price">රු ${hotel.price.toLocaleString()}</div>                                      
+                                <div class="price-details">සම්පුර්ණ මුදල, බදු ඇතුළුව</div>
+                            </div>
+                            <div class="actions">
+                                <button class="select-btn" onclick="selectHotel(${hotel.id}); event.stopPropagation();">තෝරන්න</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Switch between list and map view
+        function switchView(view) {
+            const listViewBtn = document.getElementById('listView');
+            const mapViewBtn = document.getElementById('mapView');
+            const contentContainer = document.getElementById('contentContainer');
+            
+            currentView = view;
+            
+            if (view === 'list') {
+                listViewBtn.classList.add('active');
+                mapViewBtn.classList.remove('active');
+                contentContainer.classList.remove('map-view');
+            } else {
+                mapViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+                contentContainer.classList.add('map-view');
+                
+                // Initialize map if not already done
+                if (!map) {
+                    setTimeout(() => {
+                        initMap();
+                        addMarkersToMap(currentHotels);
+                    }, 100);
+                } else {
+                    // Refresh map size and markers
+                    setTimeout(() => {
+                        map.invalidateSize();
+                        addMarkersToMap(currentHotels);
+                    }, 100);
+                }
             }
-            if (room2Qty > 0) {
-                message += `• Deluxe Room: ${room2Qty} කාමර\n`;
+        }
+
+        // Focus on hotel marker in map
+        function focusHotelOnMap(hotelId) {
+            if (currentView === 'map' && map) {
+                const hotel = currentHotels.find(h => h.id === hotelId);
+                if (hotel) {
+                    map.setView([hotel.lat, hotel.lng], 12);
+                    // Open popup for this hotel
+                    const marker = markers.find(m => m.getLatLng().lat === hotel.lat && m.getLatLng().lng === hotel.lng);
+                    if (marker) {
+                        marker.openPopup();
+                    }
+                }
+            }
+        }
+
+        // Highlight hotel card
+        function highlightHotelCard(hotelId) {
+            // Remove existing highlights
+            document.querySelectorAll('.hotel-card').forEach(card => {
+                card.classList.remove('highlight');
+            });
+            
+            // Add highlight to selected card
+            const hotelCard = document.querySelector(`[data-hotel-id="${hotelId}"]`);
+            if (hotelCard) {
+                hotelCard.classList.add('highlight');
+                hotelCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Search hotels (mock function)
+        function searchHotels() {
+            const destination = document.querySelector('select[name="destination"]').value;
+            
+            if (!destination) {
+                alert('කරුණාකර ස්ථානයක් තෝරන්න');
+                return;
             }
             
-            alert(message);
+            // Filter hotels based on destination (mock logic)
+            let filteredHotels = sampleHotels;
+            
+            // In real implementation, this would be an AJAX call to your Django backend
+            currentHotels = filteredHotels;
+            renderHotels(currentHotels);
+            
+            if (currentView === 'map' && map) {
+                addMarkersToMap(currentHotels);
+            }
         }
+
+        // Select hotel
+        function selectHotel(hotelId) {
+            const hotel = currentHotels.find(h => h.id === hotelId);
+            if (hotel) {
+                alert(`ඔබ තෝරාගත් හෝටලය: ${hotel.title}`);
+                // Here you would redirect to hotel details page
+            }
+        }
+
+        // Initialize with sample data
+        document.addEventListener('DOMContentLoaded', function() {
+            currentHotels = sampleHotels;
+            renderHotels(currentHotels);
+        });
     </script>
 </body>
 </html>
