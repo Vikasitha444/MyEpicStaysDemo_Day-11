@@ -354,7 +354,13 @@
         #map { 
             height: 500px; 
             width: 100%;
+            
         }
+        .map-view {
+            display: none;
+        }
+
+        
     </style>
 </head>
 <body>
@@ -712,6 +718,11 @@
             document.getElementById('mapView').style.display = 'block';
             document.getElementById('mapViewBtn').classList.add('active');
             document.getElementById('listViewBtn').classList.remove('active');
+            
+            // මේ line එක add කරන්න - map එක refresh කරන්න
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 100);
         }
     </script>
 
