@@ -493,6 +493,7 @@
             </div> -->
         </div> 
         
+        
          <div class="results-view-options">
             <div class="view-toggle">
                 <button id="listViewBtn" class="active" onclick="switchToListView()">ලැයිස්තුව</button>
@@ -520,6 +521,7 @@
         <p>Total Categories: {{ propertycategory|length }}</p>
         <p>Properties available: {% if all_properties %}Yes{% else %}No{% endif %}</p>
     </div> -->
+
 
     <!-- Properties List -->
     {% if all_properties %}
@@ -597,6 +599,7 @@
         </div>
     {% endif %}
 
+    
             
             <!-- <div class="hotel-card">
                 <div class="hotel-image">
@@ -676,7 +679,8 @@
         </div>
         <button>සසඳන්න</button>
     </div>
-    
+
+ 
     <!-- Leaflet JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     
@@ -726,26 +730,72 @@
         }
     </script>
 
-
+     <!-- Leaflet JS Importing-->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+   
     <script>
-        // Map එක create කරනවා
+        
+
+
+        // Map එක create කරනවා, ශ්‍රී ලංකාව Focus කරනවා
         var map = L.map('map').setView([7.8731, 80.7718], 8);
 
         // Map tiles add කරනවා
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
         // Markers add කරනවා
-        L.marker([6.9271, 79.8612]).addTo(map)
-            .bindPopup('කොළඹ හෝටලය');
+        // L.marker([6.9271, 79.8612]).addTo(map)
+        //     .bindPopup('{{ guests }}');
 
-        L.marker([7.2906, 80.6337]).addTo(map)
-            .bindPopup('කැන්ඩි හෝටලය');
+        // L.marker([7.2906, 80.6337]).addTo(map)
+        //     .bindPopup('කැන්ඩි හෝටලය');
 
-        L.marker([6.0329, 80.217]).addTo(map)
-            .bindPopup('ගාල්ල හෝටලය');
+        // L.marker([6.0329, 80.217]).addTo(map)
+        //     .bindPopup('ගාල්ල හෝටලය');
+        
+        
+        {% if all_in_one_for_map %}
+            {% for prices,pp in all_in_one_for_map %}
+                L.marker([7.8731, 80.7718]).addTo(map)
+                    .bindPopup('<b>{{ pp.title }}</b>');
+                    
+            {% endfor %}
+        {% endif %}
+        
+        
+       
     </script>
+     
+
+   
     
+    
+
     
 </body>
 </html>
+
+
+<!-- 
+
+   <div style="background: yellow; padding: 10px; margin: 10px;">
+    <h3>DEBUG INFO:</h3>
+    <p>map_details exists: {% if map_details %}YES{% else %}NO{% endif %}</p>
+    <p>map_details length: {{ map_details|length }}</p>
+    <p>map_details type: {{ map_details }}</p>
+</div>
+
+
+<div style="border: 2px solid green; padding: 10px; margin: 10px;">
+    <h3>Properties Loop:</h3>
+    {% for prices,pp in all_properties_for_map %}
+        <div style="border: 1px solid blue; padding: 5px; margin: 5px;">
+            <p><strong>Loop {{ forloop.counter }}:</strong></p>
+            <p>Property ID: {{ pp.propertyid }}</p>
+            <p>Property Title: {{ pp.title }}</p>
+            <p>Property Address: {{ pp.address }}</p>
+        </div>
+    {% empty %}
+        <p style="color: red;">NO DATA IN LOOP!</p>
+    {% endfor %}
+</div> -->

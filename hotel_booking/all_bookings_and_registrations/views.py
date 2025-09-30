@@ -87,7 +87,9 @@ def results(request):
         #මෙතැනදී, ලේසි වෙන්න, total_price එකයි,  "all_properties" ටිකයි, එකක් විදිහට එකතු කරලා, Template එකට යවනවා.
         all_in_one = zip(total_price,all_properties)
 
-
+        #Zip object එක, එයාට පාරක් විතරයි iterate වෙන්න පුළුවන්
+        #ඒ නිසා, ආයේ Property Details, Zip object එකක් විදිහට හැදුවා Map එකට දෙන්න.
+        all_in_one_for_map = zip(total_price,all_properties)
 
         context = {
             'destination': destination,
@@ -99,7 +101,8 @@ def results(request):
             'all_districts': all_districts,
             'properties_with_prices': properties_with_prices,
             'number_of_nights': number_of_nights, # මේකෙන්, Nights ගණන Template එකට යවනවා, මොකද, ආයේ ඒ Value එක "info.html" එකේ ගණනය කරන්න ඕනෙ නිසා.
-            'all_in_one': all_in_one
+            'all_in_one': all_in_one,
+            'all_in_one_for_map': all_in_one_for_map
         }
 
 
