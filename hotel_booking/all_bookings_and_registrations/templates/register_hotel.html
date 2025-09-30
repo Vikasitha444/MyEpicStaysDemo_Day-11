@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Hotel Registration</title>
+    </head>
+    <body>
+        <h1>Register Your Hotel</h1>
+        <form method="post" action="/register_hotel/">
+            {% csrf_token %}
+            <label for="hotel_name">Hotel Name:</label>
+            <input type="text" id="hotel_name" name="hotel_name" required><br><br>
+            
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required><br><br>
+            
+            <label for="minimum_night_price">Minimum Night Price (LKR):</label>
+            <input type="number" id="minimum_night_price" name="minimum_night_price" required><br><br>
+            
+            <label for="additional_guests_price">Additional Guests Price (LKR):</label>
+            <input type="number" id="additional_guests_price" name="additional_guests_price" required><br><br>
+            
+            <label for="amenities">Amenities (comma separated):</label>
+            <input type="text" id="amenities" name="amenities"><br><br>
+            
+            <button type="submit">Register Hotel</button>
+        </form>
+    </body>

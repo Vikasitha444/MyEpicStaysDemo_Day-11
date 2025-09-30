@@ -173,6 +173,17 @@ def info(request):
 
 
 
+def register_hotel(request):
+    all_districts = Districts.objects.all()
+    propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
+
+    context = {
+        'all_districts': all_districts,
+        'propertycategory': propertycategory_all_related_tables,
+    }
+    return render(request, 'register_hotel.html' , context)
+
+
 
 
 
