@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Member, Teachers  # Import both models
 from django.db import transaction
 from datetime import datetime
@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from django.db import IntegrityError
+from django.contrib import messages
+import uuid
 from .models import (
     Property, Users, Districts,  PropertyFacilities,
     PropertyCategories, PropertyPictures, Excursions,
@@ -174,14 +176,61 @@ def info(request):
 
 
 def register_hotel(request):
-    all_districts = Districts.objects.all()
-    propertycategory_all_related_tables = Property.objects.select_related('propertycategory').all() 
 
+    if request.method == 'POST':
+        try:
+            # Get form data
+            title = request.POST.get('title')
+            shortdescription = request.POST.get('shortdescription')
+            longdescription = request.POST.get('longdescription')
+            propertycategory_id = request.POST.get('propertycategory')
+            districtid = request.POST.get('districtid')
+            address = request.POST.get('address')
+            googlemappin = request.POST.get('googlemappin', '')
+            
+            # Validate required fields
+            if not all([title, shortdescription, longdescription, propertycategory_id, districtid, address]):
+                messages.error(request, 'Please fill all required fields!')
+                return redirect('register_hotel')
+            
+            # Create new property (without defaultpictureid for now)
+            property = Property.objects.create(
+                title=title,
+                shortdescription=shortdescription,
+                longdescription=longdescription,
+                propertycategory_id=propertycategory_id,
+                districtid_id=districtid,
+                address=address,
+                googlemappin=googlemappin if googlemappin else None,
+                defaultpictureid=None,  # Set as NULL instead of empty string
+                verified='N',
+                enabled='Y',
+                verifiedby=None,
+                verifiedtimestamp=None,
+                verifiednotes=None,
+                nextverification=None,
+                uuid= uuid.uuid4()
+            )
+            
+            # Success message with property details
+            messages.success(request, 
+                f'Property "{title}" (ID: {property.propertyid}) has been successfully saved to the database!')
+            
+            return redirect('register_hotel')
+            
+        except Exception as e:
+            messages.error(request, f'Database Error: {str(e)}')
+            return redirect('register_hotel')
+    
+    # GET request - show form
+    all_districts = Districts.objects.all()
+    propertycategory_all_related_tables = PropertyCategories.objects.all()
+    
     context = {
         'all_districts': all_districts,
-        'propertycategory': propertycategory_all_related_tables,
+        'propertycategory': propertycategory_all_related_tables
     }
-    return render(request, 'register_hotel.html' , context)
+    return render(request, 'register_hotel.html', context)
 
 
 
