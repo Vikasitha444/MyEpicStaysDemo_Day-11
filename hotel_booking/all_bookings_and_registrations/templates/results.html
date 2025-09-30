@@ -360,6 +360,78 @@
             display: none;
         }
 
+        /* Custom Popup Styles */
+        .leaflet-popup-content-wrapper {
+            padding: 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .leaflet-popup-content {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 280px !important;
+        }
+
+        .popup-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .popup-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .popup-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .popup-title {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .popup-location {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .popup-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .popup-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .popup-btn:hover {
+            background-color: #3a79cc;
+        }
+
+        .leaflet-popup-close-button {
+            color: #333 !important;
+            font-size: 20px !important;
+            padding: 4px 8px !important;
+        }
+
         
     </style>
 </head>
@@ -755,11 +827,32 @@
         
         
         {% if all_in_one_for_map %}
-            {% for prices,pp in all_in_one_for_map %}
-                L.marker([{{pp.googlemappin}}]).addTo(map)
-                    .bindPopup('<b>{{ pp.title }}</b>');
-            {% endfor %}
-        {% endif %}
+        {% for prices,pp in all_in_one_for_map %}
+            //Popup එකේ ලස්සනට Display කරනවා.
+            var popupHTML = `
+                <div class="popup-card">
+                    <img src="{{ pp.propertycategory.picture }}" 
+                        alt="{{ pp.title }}" 
+                        class="popup-image"
+                        onerror="this.src='https://via.placeholder.com/280x160?text=Hotel+Image'">
+                    <div class="popup-body">
+                        <div class="popup-title">{{ pp.title }}</div>
+                        <div class="popup-location">{{ pp.address|default:"ලිපිනය නොමැත" }}</div>
+                        <div class="popup-price">රු {{ prices|floatformat:0 }}</div>
+                        <a href="info?id={{ pp.uuid }}&nights={{ number_of_nights }}&guests={{ guests }}" style="text-decoration: none;">
+                            <button class="popup-btn">තෝරන්න</button>
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            L.marker([{{ pp.googlemappin }}]).addTo(map)
+                .bindPopup(popupHTML, {
+                    maxWidth: 280,
+                    minWidth: 280
+                });
+        {% endfor %}
+    {% endif %}
         
         
        
