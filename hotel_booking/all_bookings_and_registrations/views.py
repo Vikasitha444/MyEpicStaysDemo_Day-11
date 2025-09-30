@@ -63,6 +63,8 @@ def results(request):
         #"Total Price = (minimum_night_price × Nights ) + Additional Guest Prices" කියන සුත්‍රය තමා මේකට භාවිතා කරන්නේ
         #එක් එක්, Hotel එකේ, Price එක ගබඩා කිරීමට, "total_price" කියලා List එකක් හැදුවා
         total_price = []
+        number_of_nights = 0
+        additional_guests_chages = 0
         for property in all_properties:
             additional_guests_price = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('additional_guest_price').first()['additional_guest_price']
             minimum_night_price = PropertyPriceDetails.objects.filter(propertyid=property.propertyid).values('minimum_night_price').first()['minimum_night_price']
