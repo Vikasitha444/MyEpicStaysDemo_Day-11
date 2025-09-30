@@ -141,6 +141,8 @@ def info(request):
     #"Total Price = (minimum_night_price × Nights ) + Additional Guest Prices" කියන සුත්‍රය තමා මේකට භාවිතා කරන්නේ
     #ආයේ ගාන මෙතන හැදුවා, GET Methords වලින් යවලා Security එක අඩු වෙන නිසා
     total_price = 0
+    number_of_nights = 0
+    additional_guests_chages = 0
     if int(guests) > 2: 
         additional_guests = int(guests) - 2 #වැඩි Guessලා Count එක හොයාගන්නවා
         additional_guests_chages = additional_guests * int(additional_guests_price) # "Additional guests Amount * Additional guest's price" මේ සුත්‍රය තමා මෙතන භාවිතා වෙන්නේ.  
