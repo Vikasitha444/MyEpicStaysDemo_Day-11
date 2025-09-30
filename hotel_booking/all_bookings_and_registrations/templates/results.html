@@ -756,9 +756,8 @@
         
         {% if all_in_one_for_map %}
             {% for prices,pp in all_in_one_for_map %}
-                L.marker([7.8731, 80.7718]).addTo(map)
+                L.marker([{{pp.googlemappin}}]).addTo(map)
                     .bindPopup('<b>{{ pp.title }}</b>');
-                    
             {% endfor %}
         {% endif %}
         
