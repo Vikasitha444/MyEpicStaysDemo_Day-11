@@ -593,18 +593,34 @@
         <p>Total Categories: {{ propertycategory|length }}</p>
         <p>Properties available: {% if all_properties %}Yes{% else %}No{% endif %}</p>
     </div> -->
-
+    
+    {% comment %} <h1> {{ property_pictures.picture}} </h1>
+    
+    {% for pic in property_pictures %}
+        <h2>{{ pic.picture }}"</h2>
+    {% empty %}
+        <p>මේ ගෙදරට තවම පින්තූර එකතු කර නැත</p>
+    {% endfor %}
+    
+        {% for picture in property_pictures %}
+                <div class="image-item">
+                    <img src="{{ picture.picture }}" alt="{{ picture.title }}">
+                    <h4>{{ picture.picture }}</h4>
+                    <p>{{ picture.description }}</p>
+                </div>
+            {% empty %}
+        {% endfor %} {% endcomment %}
 
     <!-- Properties List -->
     {% if all_properties %}
     <div id="listView" class="list-view">
         <div class="properties-container">
-            {% for total_price, property in all_in_one %}    
+            {% for total_price, property, property_pictures  in all_in_one %}    
                 <div class="hotel-list">
                     <div class="hotel-card">
                         <div class="hotel-image">
                             {% if property.propertycategory.picture %}
-                                <img src="{{ property.propertycategory.picture }}" alt="{{ property.title }}">
+                                <img src="{{ property_pictures }}" alt="{{ property.title }}">
                             {% else %}
                                 <img src="/static/images/default-hotel.jpg" alt="Default Hotel Image">
                             {% endif %}
@@ -827,11 +843,11 @@
         
         
         {% if all_in_one_for_map %}
-        {% for prices,pp in all_in_one_for_map %}
+        {% for prices,pp,property_pictures in all_in_one_for_map %}
             //Popup එකේ ලස්සනට Display කරනවා.
             var popupHTML = `
                 <div class="popup-card">
-                    <img src="{{ pp.propertycategory.picture }}" 
+                    <img src="{{ property_pictures }}" 
                         alt="{{ pp.title }}" 
                         class="popup-image"
                         onerror="this.src='https://via.placeholder.com/280x160?text=Hotel+Image'">

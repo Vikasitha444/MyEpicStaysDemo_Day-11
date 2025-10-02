@@ -15,7 +15,8 @@ import uuid
 from .models import (
     Property, Users, Districts,  PropertyFacilities,
     PropertyCategories, PropertyPictures, Excursions,
-    PropertyRoomCategories, PropertyPriceDetails  
+    PropertyRoomCategories, PropertyPriceDetails,
+    PropertyPictures 
 )
 
 
@@ -55,6 +56,9 @@ def results(request):
         
         
         property_price_details = PropertyPriceDetails.objects.select_related('propertyid').all()
+        
+
+
 
         
         
@@ -87,14 +91,22 @@ def results(request):
         properties_with_prices = total_price
         print(properties_with_prices)
 
-        
+
+
+        #මෙතැනදී, කරලා තියෙන්නේ, Property Pictures එක ගන්න එක
+        property_pictures = []
+        for property in all_properties:
+            property_pictures.append(PropertyPictures.objects.filter(propertyid=property.propertyid).values('picture').first()['picture'])
+
         #මෙතැනදී, ලේසි වෙන්න, total_price එකයි,  "all_properties" ටිකයි, එකක් විදිහට එකතු කරලා, Template එකට යවනවා.
-        all_in_one = zip(total_price,all_properties)
+        all_in_one = zip(total_price,all_properties,property_pictures)
 
         #Zip object එක, එයාට පාරක් විතරයි iterate වෙන්න පුළුවන්
         #ඒ නිසා, ආයේ Property Details, Zip object එකක් විදිහට හැදුවා Map එකට දෙන්න.
-        all_in_one_for_map = zip(total_price,all_properties)
+        all_in_one_for_map = zip(total_price,all_properties,property_pictures)
 
+
+        
         context = {
             'destination': destination,
             'startDate': startDate,
@@ -106,7 +118,8 @@ def results(request):
             'properties_with_prices': properties_with_prices,
             'number_of_nights': number_of_nights, # මේකෙන්, Nights ගණන Template එකට යවනවා, මොකද, ආයේ ඒ Value එක "info.html" එකේ ගණනය කරන්න ඕනෙ නිසා.
             'all_in_one': all_in_one,
-            'all_in_one_for_map': all_in_one_for_map
+            'all_in_one_for_map': all_in_one_for_map,
+            
         }
 
 
@@ -153,6 +166,9 @@ def info(request):
         total_price = (minimum_night_price * int(nights)) + 0
     
 
+    property_pictures = PropertyPictures.objects.filter(propertyid=propertyid_extraction_from_uuid).first()
+    
+
 
     context = {
         'properties': properties,
@@ -162,7 +178,8 @@ def info(request):
         'nights': nights,
         'total_price': total_price,
         'guests': guests,
-        'additional_guests_price': additional_guests_price
+        'additional_guests_price': additional_guests_price,
+        'property_pictures': property_pictures,
     }   
     return render(request, 'info.html', context)
     

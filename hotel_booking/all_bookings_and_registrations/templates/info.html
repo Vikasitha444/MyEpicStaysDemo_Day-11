@@ -714,22 +714,25 @@
                 <button class="btn btn-primary">Reserve</button>
             </div>
         </div>
+        {% comment %} <h1>{{ property_pictures.diningareaimage }} h1 is header</h1> {% endcomment %}
         
+        <!-- Template: -->
+
         <div class="gallery-container">
             <div class="gallery-main-image">
-                <img src="{{ property.propertycategory.picture }}" alt="Pool view at night" class="gallery-image">
+                <img src="{{ property_pictures.picture }}" alt="Pool view at night" class="gallery-image">
             </div>
             <div class="gallery-thumbnail">
-                <img src="{{ property.propertycategory.bedareaimage }}" alt="Bed area" class="gallery-image">
+                <img src="{{ property_pictures.bedareaimage }}" alt="Bed area" class="gallery-image">
             </div>
             <div class="gallery-thumbnail">
-                <img src="{{ property.propertycategory.diningareaimage  }}" alt="Bathroom" class="gallery-image">
+                <img src="{{ property_pictures.diningareaimage  }}" alt="Bathroom" class="gallery-image">
             </div>
             <div class="gallery-thumbnail">
-                <img src="{{ property.propertycategory.roominteriorimage }}" alt="Dining area" class="gallery-image">
+                <img src="{{ property_pictures.roominteriorimage }}" alt="Dining area" class="gallery-image">
             </div>
             <div class="gallery-thumbnail">
-                <img src="{{ property.propertycategory.poolareaimage  }}" alt="Room interior" class="gallery-image">
+                <img src="{{ property_pictures.poolareaimage  }}" alt="Room interior" class="gallery-image">
             </div>
             
             <div class="view-all-photos">

@@ -158,18 +158,21 @@ class PropertyFacilities(models.Model):
         db_table = 'propertyfacilities'
 
 class PropertyPictures(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    property_id = models.BigIntegerField()
+    propertypictureid = models.BigAutoField(primary_key=True)
+    propertyid = models.ForeignKey(Property, on_delete=models.CASCADE, db_column='propertyid')
     title = models.CharField(max_length=255)
-    picture_url = models.CharField(max_length=255)
+    picture = models.CharField(max_length=255)
     description = models.TextField()
-    is_cover = models.BooleanField()
-    display_order = models.IntegerField()
-    created_at = models.DateTimeField()
+    bedareaimage  = models.CharField(max_length=500)
+    diningareaimage  = models.CharField(max_length=500)
+    bathroomimage  = models.CharField(max_length=500)
+    roominteriorimage = models.CharField(max_length=500)
+    poolareaimage  = models.CharField(max_length=500)
+
 
     class Meta:
         managed = False
-        db_table = 'property_pictures'
+        db_table = 'propertypicture'
 
 class PropertyRestrictions(models.Model):
     id = models.BigAutoField(primary_key=True)
