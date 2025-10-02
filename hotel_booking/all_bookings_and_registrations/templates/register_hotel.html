@@ -84,7 +84,152 @@
         <input type="text" name="googlemappin" id="googlemappin" placeholder="e.g., 6.9271,79.8612">
         <br><br>
 
+        <!-- Property Images Section එක add කරන්න form එකේ -->
+        <h2>Property Images</h2>
 
+        <label for="main_picture">Main Property Picture URL *</label>
+        <input type="url" name="main_picture" id="main_picture" placeholder="https://example.com/image.jpg" required>
+        <small>Enter the full URL of the main property image</small>
+        <br><br>
+
+        <label for="bedareaimage">Bed Area Image URL *</label>
+        <input type="url" name="bedareaimage" id="bedareaimage" placeholder="https://example.com/bed-area.jpg" required>
+        <small>Enter the URL for bedroom/bed area image</small>
+        <br><br>
+
+        <label for="diningareaimage">Dining Area Image URL *</label>
+        <input type="url" name="diningareaimage" id="diningareaimage" placeholder="https://example.com/dining-area.jpg" required>
+        <small>Enter the URL for dining area image</small>
+        <br><br>
+
+        <label for="bathroomimage">Bathroom Image URL *</label>
+        <input type="url" name="bathroomimage" id="bathroomimage" placeholder="https://example.com/bathroom.jpg" required>
+        <small>Enter the URL for bathroom image</small>
+        <br><br>
+
+        <label for="roominteriorimage">Room Interior Image URL *</label>
+        <input type="url" name="roominteriorimage" id="roominteriorimage" placeholder="https://example.com/room-interior.jpg" required>
+        <small>Enter the URL for room interior image</small>
+        <br><br>
+
+        <label for="poolareaimage">Pool Area Image URL *</label>
+        <input type="url" name="poolareaimage" id="poolareaimage" placeholder="https://example.com/pool-area.jpg" required>
+        <small>Enter the URL for pool area image</small>
+        <br><br>
+
+        <label for="picture_title">Picture Title (Optional)</label>
+        <input type="text" name="picture_title" id="picture_title" placeholder="Beautiful property images">
+        <br><br>
+
+        <label for="picture_description">Picture Description (Optional)</label>
+        <textarea name="picture_description" id="picture_description" rows="3" placeholder="Description of the property images"></textarea>
+        <br><br>
+
+
+        <!-- Property Facilities Section -->
+        <h2>Property Facilities</h2>
+        <p>Select all facilities available at your property</p>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0;">
+            
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_201" value="201">
+                <label for="facility_201">
+                    <strong>Swimming Pool</strong><br>
+                    <small>Rooftop infinity pool</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_202" value="202">
+                <label for="facility_202">
+                    <strong>Spa & Wellness</strong><br>
+                    <small>Full-service spa with massage</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_203" value="203">
+                <label for="facility_203">
+                    <strong>Free WiFi</strong><br>
+                    <small>High-speed complimentary WiFi</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_204" value="204">
+                <label for="facility_204">
+                    <strong>Business Center</strong><br>
+                    <small>24-hour business facilities</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_205" value="205">
+                <label for="facility_205">
+                    <strong>Private Beach</strong><br>
+                    <small>800m exclusive beachfront</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_206" value="206">
+                <label for="facility_206">
+                    <strong>Golf Course</strong><br>
+                    <small>Championship 18-hole course</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_207" value="207">
+                <label for="facility_207">
+                    <strong>Kids Club</strong><br>
+                    <small>Supervised children's activities</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_208" value="208">
+                <label for="facility_208">
+                    <strong>Tea Tasting</strong><br>
+                    <small>Traditional Ceylon tea experience</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_209" value="209">
+                <label for="facility_209">
+                    <strong>Wildlife Safari</strong><br>
+                    <small>Guided nature walks</small>
+                </label>
+            </div>
+
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                <input type="checkbox" name="facilities" id="facility_210" value="210">
+                <label for="facility_210">
+                    <strong>Historic Tours</strong><br>
+                    <small>Guided walks through history</small>
+                </label>
+            </div>
+        </div>
+        <small style="color: #666;">* Select at least one facility</small>
+        <br><br>
+
+        <!-- Property Price Details Section -->
+        <h2>Property Price Details</h2>
+        <p>Set pricing information for your property</p>
+
+        <label for="minimum_night_price">Minimum Price Per Night (LKR) *</label>
+        <input type="number" name="minimum_night_price" id="minimum_night_price" 
+            placeholder="e.g., 5000" min="0" step="100" required>
+        <small>Base price for standard occupancy (usually 2 guests)</small>
+        <br><br>
+
+        <label for="additional_guest_price">Additional Guest Price (LKR) *</label>
+        <input type="number" name="additional_guest_price" id="additional_guest_price" 
+            placeholder="e.g., 1500" min="0" step="100" required>
+        <small>Price per additional guest above standard occupancy</small>
+        <br><br>
         <!-- Buttons -->
         <button type="reset">Reset</button>
         <button type="submit">Register Property</button>

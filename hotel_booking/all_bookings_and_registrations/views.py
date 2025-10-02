@@ -190,13 +190,11 @@ def info(request):
 
 
 
-
-
 def register_hotel(request):
 
     if request.method == 'POST':
         try:
-            # Get form data
+            # Get form data - Basic Information
             title = request.POST.get('title')
             shortdescription = request.POST.get('shortdescription')
             longdescription = request.POST.get('longdescription')
@@ -205,12 +203,63 @@ def register_hotel(request):
             address = request.POST.get('address')
             googlemappin = request.POST.get('googlemappin', '')
             
+            # Get image URLs from form
+            main_picture = request.POST.get('main_picture')
+            bedareaimage = request.POST.get('bedareaimage')
+            diningareaimage = request.POST.get('diningareaimage')
+            bathroomimage = request.POST.get('bathroomimage')
+            roominteriorimage = request.POST.get('roominteriorimage')
+            poolareaimage = request.POST.get('poolareaimage')
+            picture_title = request.POST.get('picture_title', 'Property Images')
+            picture_description = request.POST.get('picture_description', '')
+            
+            # Get selected facilities from checkboxes
+            selected_facilities = request.POST.getlist('facilities')
+            
+            # Get price details
+            minimum_night_price = request.POST.get('minimum_night_price')
+            additional_guest_price = request.POST.get('additional_guest_price')
+            
+            # Facility details mapping (iconid එක හා title එක)
+            facility_details = {
+                '201': 'Swimming Pool',
+                '202': 'Spa & Wellness',
+                '203': 'Free WiFi',
+                '204': 'Business Center',
+                '205': 'Private Beach',
+                '206': 'Golf Course',
+                '207': 'Kids Club',
+                '208': 'Tea Tasting',
+                '209': 'Wildlife Safari',
+                '210': 'Historic Tours'
+            }
+            
             # Validate required fields
-            if not all([title, shortdescription, longdescription, propertycategory_id, districtid, address]):
+            if not all([title, shortdescription, longdescription, propertycategory_id, 
+                       districtid, address, main_picture, bedareaimage, diningareaimage, 
+                       bathroomimage, roominteriorimage, poolareaimage, 
+                       minimum_night_price, additional_guest_price]):
                 messages.error(request, 'Please fill all required fields!')
                 return redirect('register_hotel')
             
-            # Create new property (without defaultpictureid for now)
+            # Validate at least one facility is selected
+            if len(selected_facilities) == 0:
+                messages.error(request, 'Please select at least one facility!')
+                return redirect('register_hotel')
+            
+            # Validate price values
+            try:
+                minimum_night_price = int(minimum_night_price)
+                additional_guest_price = int(additional_guest_price)
+                
+                if minimum_night_price <= 0 or additional_guest_price < 0:
+                    messages.error(request, 'Prices must be positive numbers!')
+                    return redirect('register_hotel')
+            except ValueError:
+                messages.error(request, 'Invalid price values!')
+                return redirect('register_hotel')
+            
+            # Create new property
             property = Property.objects.create(
                 title=title,
                 shortdescription=shortdescription,
@@ -219,19 +268,52 @@ def register_hotel(request):
                 districtid_id=districtid,
                 address=address,
                 googlemappin=googlemappin if googlemappin else None,
-                defaultpictureid=None,  # Set as NULL instead of empty string
+                defaultpictureid=None,
                 verified='N',
                 enabled='Y',
                 verifiedby=None,
                 verifiedtimestamp=None,
                 verifiednotes=None,
                 nextverification=None,
-                uuid= uuid.uuid4()
+                uuid=uuid.uuid4()
             )
             
-            # Success message with property details
+            # Save property pictures to propertypicture table
+            property_picture = PropertyPictures.objects.create(
+                propertyid=property,  # Foreign Key
+                title=picture_title,
+                picture=main_picture,
+                description=picture_description,
+                bedareaimage=bedareaimage,
+                diningareaimage=diningareaimage,
+                bathroomimage=bathroomimage,
+                roominteriorimage=roominteriorimage,
+                poolareaimage=poolareaimage
+            )
+            
+            # Save property price details to property_price_details table
+            PropertyPriceDetails.objects.create(
+                propertyid=property,  # Foreign Key
+                minimum_night_price=minimum_night_price,
+                additional_guest_price=additional_guest_price
+            )
+            
+            # Save selected facilities to propertyfacilities table
+            for iconid in selected_facilities:
+                facility_title = facility_details.get(iconid, 'Unknown Facility')
+                
+                PropertyFacilities.objects.create(
+                    propertyid=property,  # Foreign Key
+                    title=facility_title,
+                    iconid=int(iconid),
+                    description='',  # Empty description
+                    propertypictureid=property_picture.propertypictureid,
+                    sizedimentiondetails=''  # Empty size details
+                )
+            
+            # Success message
             messages.success(request, 
-                f'Property "{title}" (ID: {property.propertyid}) has been successfully saved to the database!')
+                f'Property "{title}" with {len(selected_facilities)} facilities and pricing details have been successfully saved!')
             
             return redirect('register_hotel')
             
@@ -248,13 +330,6 @@ def register_hotel(request):
         'propertycategory': propertycategory_all_related_tables
     }
     return render(request, 'register_hotel.html', context)
-
-
-
-
-
-
-
 
 
 # # 01) Insert data into table
