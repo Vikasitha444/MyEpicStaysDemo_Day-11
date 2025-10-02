@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Property - MyEpicStays</title>
+</head>
+<body>
+    <h1>Delete Property</h1>
+    <p>Search and delete properties from the database</p>
+
+    <!-- Success/Error Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div>
+                <strong>
+                    {% if message.tags == 'success' %}✓ Success:{% else %}✗ Error:{% endif %}
+                </strong>
+                {{ message }}
+            </div>
+            <br>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Search Form -->
+    <h2>Search Property</h2>
+    <form method="GET" action="{% url 'delete_hotel' %}">
+        <label for="search_query">Search by Property Name or ID:</label><br>
+        <input type="text" name="search_query" id="search_query" placeholder="Enter property name or ID" value="{{ search_query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <br><br>
+
+    <!-- Search Results -->
+    {% if properties %}
+        <h2>Search Results ({{ properties|length }} found)</h2>
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Property ID</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>District</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in properties %}
+                <tr>
+                    <td>{{ property.propertyid }}</td>
+                    <td>{{ property.title }}</td>
+                    <td>{{ property.propertycategory.title }}</td>
+                    <td>{{ property.districtid.title }}</td>
+                    <td>{{ property.address }}</td>
+                    <td>{{ property.enabled }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'delete_hotel' %}" onsubmit="return confirm('Are you sure you want to delete {{ property.title }}?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="property_id" value="{{ property.propertyid }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif search_query %}
+        <p>No properties found matching "{{ search_query }}"</p>
+    {% endif %}
+
+    <br><br>
+
+    <!-- All Properties List -->
+    {% if not search_query %}
+        <h2>All Properties ({{ all_properties|length }})</h2>
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Property ID</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>District</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in all_properties %}
+                <tr>
+                    <td>{{ property.propertyid }}</td>
+                    <td>{{ property.title }}</td>
+                    <td>{{ property.propertycategory.title }}</td>
+                    <td>{{ property.districtid.title }}</td>
+                    <td>{{ property.address }}</td>
+                    <td>{{ property.enabled }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'delete_hotel' %}" onsubmit="return confirm('Are you sure you want to delete {{ property.title }}?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="property_id" value="{{ property.propertyid }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <br><br>
+    <a href="/">Back to Home</a>
+
+</body>
+</html>

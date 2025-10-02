@@ -332,37 +332,56 @@ def register_hotel(request):
     return render(request, 'register_hotel.html', context)
 
 
-# # 01) Insert data into table
-#     # Teachers.objects.create(
-#     #     reg_no=10,
-#     #     name='nimal',
-#     #     address='horana',
-#     #     gender='male',
-#     #     salary=20000,
-#     #     subject="ICT"
-#     # )
 
-#     # 02) Database එකේ සියලුම විස්තර දර්ශනය කිරීම
-#     Teachers_Table = Teachers.objects.all()
 
-#     # 03) හොරණ ජිවත් වන ගුරුවරුන්ගේ, ගුරු අංකය හා විෂය ලබා ගැනීම
-#     horana_teachers = Teachers.objects.filter(address='horana').values('reg_no', 'subject', 'name')
 
-#     # 04) ගම්පහ නොවන වෙනත් ප්‍රදේශ වල ජිවත් වන ගුරුවරුන්ගේ නම හා ලිපිනය තෝරා ගැනීම
-#     non_gampaha_teachers = Teachers.objects.exclude(address='gampaha').values('name', 'address')
+
+def delete_hotel(request):
+    search_query = request.GET.get('search_query', '').strip()
     
-#     # 05) වැටුප 25,000 ට වැඩි ගුරුවරුන්ගේ, ගුරු අංකය, නම, විෂය හා වැටුප තේරීම
-#     high_salary_teachers = Teachers.objects.filter(salary__gt=25000).values('reg_no', 'name', 'subject', 'salary')
-
-#     # 06) kaluගේ ලිපිනය කළුතර බවට වෙනස් කිරීම
-#     try:
-#         teacher = Teachers.objects.get(name='kalu')
-#         teacher.address = 'kaluthara'
-#         teacher.save()
-#         update_status = "Updated successfully"
-#     except Teachers.DoesNotExist:
-#         update_status = "Teacher 'kalu' not found"
-
-#     # 07) වැටුප 25,000ට අඩු ගුරුවරුන්ගේ සියලුම දත්ත මැකීම
-#     teachers_to_delete = Teachers.objects.filter(salary__lt=25000).delete()
+    # Handle DELETE request
+    if request.method == 'POST':
+        property_id = request.POST.get('property_id')
+        
+        try:
+            property = Property.objects.get(propertyid=property_id)
+            property_title = property.title
+            
+            # Delete property (cascade delete will handle related records)
+            property.delete()
+            
+            messages.success(request, f'Property "{property_title}" (ID: {property_id}) has been successfully deleted!')
+            return redirect('delete_hotel')
+            
+        except Property.DoesNotExist:
+            messages.error(request, f'Property with ID {property_id} does not exist!')
+            return redirect('delete_hotel')
+        except Exception as e:
+            messages.error(request, f'Error deleting property: {str(e)}')
+            return redirect('delete_hotel')
     
+    # Handle GET request (display properties)
+    if search_query:
+        # Search by title or property ID
+        try:
+            # Try to search by ID first
+            property_id = int(search_query)
+            properties = Property.objects.select_related('propertycategory', 'districtid').filter(propertyid=property_id)
+        except ValueError:
+            # If not a number, search by title
+            properties = Property.objects.select_related('propertycategory', 'districtid').filter(
+                title__icontains=search_query
+            )
+    else:
+        properties = None
+    
+    # Get all properties for display when not searching
+    all_properties = Property.objects.select_related('propertycategory', 'districtid').all()
+    
+    context = {
+        'properties': properties,
+        'all_properties': all_properties,
+        'search_query': search_query
+    }
+    
+    return render(request, 'delete_hotel.html', context)
