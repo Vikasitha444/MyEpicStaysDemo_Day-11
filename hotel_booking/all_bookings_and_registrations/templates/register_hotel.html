@@ -3,238 +3,1021 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Registration</title>
+    <title>Register Your Property - MyEpicStays</title>
+    <link rel="icon" href="https://myepicstays.com//assets/img/Symbol-01.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            {% comment %} background: linear-gradient(135deg, #A81717 0%, #020202 100%); {% endcomment %}
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            margin-right: 12px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .form-header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 60%;
+            width: 80%;
+            height: 3px;
+            background: #ddd;
+            z-index: 0;
+        }
+
+        .progress-step.active::after,
+        .progress-step.completed::after {
+            background: #4285f4;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ddd;
+            color: #666;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step.active .step-circle {
+            background: #4285f4;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+        }
+
+        .progress-step.completed .step-circle {
+            background: #34a853;
+            color: white;
+        }
+
+        .progress-step.completed .step-circle::after {
+            content: '✓';
+        }
+
+        .step-label {
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .progress-step.active .step-label {
+            color: #4285f4;
+            font-weight: 600;
+        }
+
+        /* Progress Bar Visual */
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4285f4, #1a73e8);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        /* Form Content */
+        .form-content {
+            padding: 40px;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #4285f4;
+        }
+
+        .step-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .required {
+            color: #dc3545;
+            margin-left: 3px;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #fafafa;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4285f4;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        small {
+            color: #666;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        /* Facilities Grid */
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .facility-card {
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+        }
+
+        .facility-card:hover {
+            border-color: #4285f4;
+            background: #f0f8ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.15);
+        }
+
+        .facility-card input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4285f4;
+        }
+
+        .facility-card.checked {
+            border-color: #4285f4;
+            background: #e3f2fd;
+        }
+
+        .facility-info {
+            flex: 1;
+        }
+
+        .facility-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .facility-desc {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Messages */
+        .message {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.success {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1a73e8 0%, #1557b8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 115, 232, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #34a853 0%, #2d9348 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #2d9348 0%, #257d3a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 168, 83, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Success Screen */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .success-screen.active {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 0.8s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .success-screen h2 {
+            color: #34a853;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .success-screen p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+
+            .form-header h1 {
+                font-size: 1.6em;
+            }
+
+            .form-content {
+                padding: 30px 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .facilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .progress-steps {
+                flex-wrap: wrap;
+            }
+
+            .progress-step {
+                min-width: 80px;
+                margin-bottom: 15px;
+            }
+
+            .progress-step::after {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Register Your Property</h1>
-    <p>Register your hotel, villa, guest house or other accommodation</p>
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="logo">
+            <img src="https://myepicstays.com/assets/img/logo.png" alt="MyEpicStays Logo">
+        </a>
+        <nav>
+            <a href="/" style="text-decoration: none; color: #333; font-weight: 600;">← Back to Home</a>
+        </nav>
+    </header>
 
-    <!-- Success/Error Messages -->
-    {% if messages %}
-        {% for message in messages %}
-            <div style="padding: 15px; margin-bottom: 20px; border: 2px solid; border-radius: 5px; 
-                        {% if message.tags == 'success' %}
-                            background-color: #d4edda; border-color: #c3e6cb; color: #155724;
-                        {% else %}
-                            background-color: #f8d7da; border-color: #f5c6cb; color: #721c24;
-                        {% endif %}">
-                <strong>
-                    {% if message.tags == 'success' %}✅ Success:{% else %}❌ Error:{% endif %}
-                </strong>
-                {{ message }}
+    <div class="container">
+        <!-- Form Header -->
+        <div class="form-header">
+            <h1>🏨 Register Your Property</h1>
+            <p>Join MyEpicStays and start welcoming guests today!</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Basic Info</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Images</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Facilities</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Pricing</div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <div class="step-circle">5</div>
+                    <div class="step-label">Review</div>
+                </div>
             </div>
-        {% endfor %}
-    {% endif %}
-
-
-
-
-
-    <form method="POST" action="{% url 'register_hotel' %}">
-        {% csrf_token %}
-        
-        <!-- Basic Information -->
-        <h2>Basic Information</h2>
-        
-        <label for="title">Property Name *</label>
-        <input type="text" name="title" id="title" required>
-        <br><br>
-        
-        <label for="shortdescription">Short Description *</label>
-        <input type="text" name="shortdescription" id="shortdescription" maxlength="500" required>
-        <br><br>
-        
-        <label for="longdescription">Full Description *</label>
-        <textarea name="longdescription" id="longdescription" rows="6" required></textarea>
-        <br><br>
-        
-
-        <!-- Property Type -->
-        <h2>Property Type</h2>
-        
-        <label for="propertycategory">Property Category *</label>
-        <select name="propertycategory" id="propertycategory" required>
-            <option value="">Select a category</option>
-            {% for category in propertycategory %}
-                <option value="{{ category.propertycategoryid }}">
-                    {{ category.title }}
-                </option>
-            {% endfor %}
-        </select>
-        <br><br>
-
-
-        <!-- Location -->
-        <h2>Location</h2>
-        
-        <label for="districtid">District *</label>
-        <select name="districtid" id="districtid" required>
-            <option value="">Select a district</option>
-            {% for district in all_districts %}
-                <option value="{{ district.districtid }}">{{ district.title }}</option>
-            {% endfor %}
-        </select>
-        <br><br>
-        
-        <label for="address">Full Address *</label>
-        <textarea name="address" id="address" rows="4" required></textarea>
-        <br><br>
-        
-        <label for="googlemappin">Google Maps Link (Optional)</label>
-        <input type="text" name="googlemappin" id="googlemappin" placeholder="e.g., 6.9271,79.8612">
-        <br><br>
-
-        <!-- Property Images Section එක add කරන්න form එකේ -->
-        <h2>Property Images</h2>
-
-        <label for="main_picture">Main Property Picture URL *</label>
-        <input type="url" name="main_picture" id="main_picture" placeholder="https://example.com/image.jpg" required>
-        <small>Enter the full URL of the main property image</small>
-        <br><br>
-
-        <label for="bedareaimage">Bed Area Image URL *</label>
-        <input type="url" name="bedareaimage" id="bedareaimage" placeholder="https://example.com/bed-area.jpg" required>
-        <small>Enter the URL for bedroom/bed area image</small>
-        <br><br>
-
-        <label for="diningareaimage">Dining Area Image URL *</label>
-        <input type="url" name="diningareaimage" id="diningareaimage" placeholder="https://example.com/dining-area.jpg" required>
-        <small>Enter the URL for dining area image</small>
-        <br><br>
-
-        <label for="bathroomimage">Bathroom Image URL *</label>
-        <input type="url" name="bathroomimage" id="bathroomimage" placeholder="https://example.com/bathroom.jpg" required>
-        <small>Enter the URL for bathroom image</small>
-        <br><br>
-
-        <label for="roominteriorimage">Room Interior Image URL *</label>
-        <input type="url" name="roominteriorimage" id="roominteriorimage" placeholder="https://example.com/room-interior.jpg" required>
-        <small>Enter the URL for room interior image</small>
-        <br><br>
-
-        <label for="poolareaimage">Pool Area Image URL *</label>
-        <input type="url" name="poolareaimage" id="poolareaimage" placeholder="https://example.com/pool-area.jpg" required>
-        <small>Enter the URL for pool area image</small>
-        <br><br>
-
-        <label for="picture_title">Picture Title (Optional)</label>
-        <input type="text" name="picture_title" id="picture_title" placeholder="Beautiful property images">
-        <br><br>
-
-        <label for="picture_description">Picture Description (Optional)</label>
-        <textarea name="picture_description" id="picture_description" rows="3" placeholder="Description of the property images"></textarea>
-        <br><br>
-
-
-        <!-- Property Facilities Section -->
-        <h2>Property Facilities</h2>
-        <p>Select all facilities available at your property</p>
-
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0;">
-            
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_201" value="201">
-                <label for="facility_201">
-                    <strong>Swimming Pool</strong><br>
-                    <small>Rooftop infinity pool</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_202" value="202">
-                <label for="facility_202">
-                    <strong>Spa & Wellness</strong><br>
-                    <small>Full-service spa with massage</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_203" value="203">
-                <label for="facility_203">
-                    <strong>Free WiFi</strong><br>
-                    <small>High-speed complimentary WiFi</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_204" value="204">
-                <label for="facility_204">
-                    <strong>Business Center</strong><br>
-                    <small>24-hour business facilities</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_205" value="205">
-                <label for="facility_205">
-                    <strong>Private Beach</strong><br>
-                    <small>800m exclusive beachfront</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_206" value="206">
-                <label for="facility_206">
-                    <strong>Golf Course</strong><br>
-                    <small>Championship 18-hole course</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_207" value="207">
-                <label for="facility_207">
-                    <strong>Kids Club</strong><br>
-                    <small>Supervised children's activities</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_208" value="208">
-                <label for="facility_208">
-                    <strong>Tea Tasting</strong><br>
-                    <small>Traditional Ceylon tea experience</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_209" value="209">
-                <label for="facility_209">
-                    <strong>Wildlife Safari</strong><br>
-                    <small>Guided nature walks</small>
-                </label>
-            </div>
-
-            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
-                <input type="checkbox" name="facilities" id="facility_210" value="210">
-                <label for="facility_210">
-                    <strong>Historic Tours</strong><br>
-                    <small>Guided walks through history</small>
-                </label>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBar"></div>
             </div>
         </div>
-        <small style="color: #666;">* Select at least one facility</small>
-        <br><br>
 
-        <!-- Property Price Details Section -->
-        <h2>Property Price Details</h2>
-        <p>Set pricing information for your property</p>
+        <!-- Form Content -->
+        <div class="form-content">
+            <!-- Success/Error Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message {% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                        <strong>
+                            {% if message.tags == 'success' %}✅ Success:{% else %}❌ Error:{% endif %}
+                        </strong>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
 
-        <label for="minimum_night_price">Minimum Price Per Night (LKR) *</label>
-        <input type="number" name="minimum_night_price" id="minimum_night_price" 
-            placeholder="e.g., 5000" min="0" step="100" required>
-        <small>Base price for standard occupancy (usually 2 guests)</small>
-        <br><br>
+            <form method="POST" action="{% url 'register_hotel' %}" id="registrationForm">
+                {% csrf_token %}
+                
+                <!-- Step 1: Basic Information -->
+                <div class="form-step active" data-step="1">
+                    <h2 class="step-title">📋 Basic Information</h2>
+                    <p class="step-description">Tell us about your property</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Property Name <span class="required">*</span></label>
+                            <input type="text" name="title" id="title" required placeholder="e.g., Luxury Beach Resort Colombo">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Property Category <span class="required">*</span></label>
+                            <select name="propertycategory" id="propertycategory" required>
+                                <option value="">Select Category</option>
+                                {% for category in propertycategory %}
+                                    <option value="{{ category.propertycategoryid }}">{{ category.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>District <span class="required">*</span></label>
+                            <select name="districtid" id="districtid" required>
+                                <option value="">Select District</option>
+                                {% for district in all_districts %}
+                                    <option value="{{ district.districtid }}">{{ district.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label>Short Description <span class="required">*</span></label>
+                            <input type="text" name="shortdescription" id="shortdescription" maxlength="500" required 
+                                   placeholder="Brief description (max 500 characters)">
+                            <small>A catchy one-liner about your property</small>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label>Full Description <span class="required">*</span></label>
+                            <textarea name="longdescription" id="longdescription" required 
+                                      placeholder="Detailed description of your property, its features, nearby attractions, etc."></textarea>
+                            <small>Minimum 100 characters recommended</small>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label>Full Address <span class="required">*</span></label>
+                            <textarea name="address" id="address" rows="3" required 
+                                      placeholder="e.g., 123, Galle Road, Colombo 03"></textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label>Google Maps Coordinates (Optional)</label>
+                            <input type="text" name="googlemappin" id="googlemappin" 
+                                   placeholder="e.g., 6.9271,79.8612">
+                            <small>Latitude and Longitude separated by comma</small>
+                        </div>
+                    </div>
+                </div>
 
-        <label for="additional_guest_price">Additional Guest Price (LKR) *</label>
-        <input type="number" name="additional_guest_price" id="additional_guest_price" 
-            placeholder="e.g., 1500" min="0" step="100" required>
-        <small>Price per additional guest above standard occupancy</small>
-        <br><br>
-        <!-- Buttons -->
-        <button type="reset">Reset</button>
-        <button type="submit">Register Property</button>
-        
-    </form>
+                <!-- Step 2: Property Images -->
+                <div class="form-step" data-step="2">
+                    <h2 class="step-title">📸 Property Images</h2>
+                    <p class="step-description">Add high-quality images to showcase your property</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Main Property Picture URL <span class="required">*</span></label>
+                            <input type="url" name="main_picture" id="main_picture" required 
+                                   placeholder="https://example.com/image.jpg">
+                            <small>This will be the cover image of your property</small>
+                        </div>
 
+                        <div class="form-group">
+                            <label>Bed Area Image URL <span class="required">*</span></label>
+                            <input type="url" name="bedareaimage" id="bedareaimage" required 
+                                   placeholder="https://example.com/bed-area.jpg">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dining Area Image URL <span class="required">*</span></label>
+                            <input type="url" name="diningareaimage" id="diningareaimage" required 
+                                   placeholder="https://example.com/dining-area.jpg">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Bathroom Image URL <span class="required">*</span></label>
+                            <input type="url" name="bathroomimage" id="bathroomimage" required 
+                                   placeholder="https://example.com/bathroom.jpg">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Room Interior Image URL <span class="required">*</span></label>
+                            <input type="url" name="roominteriorimage" id="roominteriorimage" required 
+                                   placeholder="https://example.com/room-interior.jpg">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pool Area Image URL <span class="required">*</span></label>
+                            <input type="url" name="poolareaimage" id="poolareaimage" required 
+                                   placeholder="https://example.com/pool-area.jpg">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Picture Title (Optional)</label>
+                            <input type="text" name="picture_title" id="picture_title" 
+                                   placeholder="e.g., Beautiful Property Images">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Picture Description (Optional)</label>
+                            <textarea name="picture_description" id="picture_description" rows="3" 
+                                      placeholder="Brief description of the images"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Facilities -->
+                <div class="form-step" data-step="3">
+                    <h2 class="step-title">✨ Property Facilities</h2>
+                    <p class="step-description">Select all facilities available at your property</p>
+                    
+                    <label>Available Facilities <span class="required">*</span></label>
+                    <small style="display: block; margin-bottom: 15px;">Select at least one facility</small>
+                    
+                    <div class="facilities-grid">
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="201" id="facility_201">
+                            <div class="facility-info">
+                                <div class="facility-title">🏊 Swimming Pool</div>
+                                <div class="facility-desc">Rooftop infinity pool</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="202" id="facility_202">
+                            <div class="facility-info">
+                                <div class="facility-title">💆 Spa & Wellness</div>
+                                <div class="facility-desc">Full-service spa with massage</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="203" id="facility_203">
+                            <div class="facility-info">
+                                <div class="facility-title">📶 Free WiFi</div>
+                                <div class="facility-desc">High-speed complimentary WiFi</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="204" id="facility_204">
+                            <div class="facility-info">
+                                <div class="facility-title">🏢 Business Center</div>
+                                <div class="facility-desc">24-hour business facilities</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="205" id="facility_205">
+                            <div class="facility-info">
+                                <div class="facility-title">🏖️ Private Beach</div>
+                                <div class="facility-desc">800m exclusive beachfront</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="206" id="facility_206">
+                            <div class="facility-info">
+                                <div class="facility-title">⛳ Golf Course</div>
+                                <div class="facility-desc">Championship 18-hole course</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="207" id="facility_207">
+                            <div class="facility-info">
+                                <div class="facility-title">👶 Kids Club</div>
+                                <div class="facility-desc">Supervised children's activities</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="208" id="facility_208">
+                            <div class="facility-info">
+                                <div class="facility-title">🍵 Tea Tasting</div>
+                                <div class="facility-desc">Traditional Ceylon tea experience</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="209" id="facility_209">
+                            <div class="facility-info">
+                                <div class="facility-title">🦁 Wildlife Safari</div>
+                                <div class="facility-desc">Guided nature walks</div>
+                            </div>
+                        </div>
+
+                        <div class="facility-card" onclick="toggleFacility(this)">
+                            <input type="checkbox" name="facilities" value="210" id="facility_210">
+                            <div class="facility-info">
+                                <div class="facility-title">🏛️ Historic Tours</div>
+                                <div class="facility-desc">Guided walks through history</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Pricing -->
+                <div class="form-step" data-step="4">
+                    <h2 class="step-title">💰 Pricing Details</h2>
+                    <p class="step-description">Set your property pricing structure</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Minimum Price Per Night (LKR) <span class="required">*</span></label>
+                            <input type="number" name="minimum_night_price" id="minimum_night_price" required 
+                                   min="0" step="100" placeholder="5000">
+                            <small>Base price for standard occupancy (2 guests)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Additional Guest Price (LKR) <span class="required">*</span></label>
+                            <input type="number" name="additional_guest_price" id="additional_guest_price" required 
+                                   min="0" step="100" placeholder="1500">
+                            <small>Price per additional guest above 2</small>
+                        </div>
+                    </div>
+
+                    <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #4285f4;">
+                        <h3 style="margin-bottom: 10px; color: #1a73e8;">💡 Pricing Tips</h3>
+                        <ul style="margin-left: 20px; color: #666;">
+                            <li>Research competitor prices in your area</li>
+                            <li>Consider seasonal pricing variations</li>
+                            <li>Factor in your property's unique features</li>
+                            <li>Leave room for promotional discounts</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 5: Review -->
+                <div class="form-step" data-step="5">
+                    <h2 class="step-title">✅ Review & Submit</h2>
+                    <p class="step-description">Please review all information before submitting</p>
+                    
+                    <div id="reviewContent" style="background: #f8f9fa; padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+                        <h3 style="margin-bottom: 20px; color: #4285f4;">📋 Registration Summary</h3>
+                        <div id="reviewSummary"></div>
+                    </div>
+                    
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-bottom: 20px;">
+                        <strong>⚠️ Important:</strong> Please ensure all information is accurate. Your property will be reviewed by our team before going live.
+                    </div>
+                </div>
+
+                <!-- Success Screen -->
+                <div class="success-screen">
+                    <div class="success-icon">✅</div>
+                    <h2>Registration Successful!</h2>
+                    <p>Your property has been successfully registered. We'll review your submission and get back to you within 24-48 hours.</p>
+                    <button type="button" class="btn btn-primary" onclick="location.reload()">Register Another Property</button>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">
+                        ⬅️ Previous
+                    </button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
+                        Next ➡️
+                    </button>
+                    <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                        🎉 Submit Registration
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressBar.style.width = percentage + '%';
+            
+            // Update step circles
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                const stepNum = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNum === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Change step
+        function changeStep(direction) {
+            const currentSection = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+            
+            // Validate before moving forward
+            if (direction === 1) {
+                const inputs = currentSection.querySelectorAll('input[required], select[required], textarea[required]');
+                let isValid = true;
+                
+                inputs.forEach(input => {
+                    if (!input.value) {
+                        isValid = false;
+                        input.style.borderColor = '#dc3545';
+                    } else {
+                        input.style.borderColor = '#e0e0e0';
+                    }
+                });
+                
+                // Check facilities on step 3
+                if (currentStep === 3) {
+                    const checkedFacilities = document.querySelectorAll('input[name="facilities"]:checked');
+                    if (checkedFacilities.length === 0) {
+                        alert('Please select at least one facility');
+                        return;
+                    }
+                }
+                
+                if (!isValid) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+            }
+            
+            // Hide current step
+            currentSection.classList.remove('active');
+            
+            // Update current step
+            currentStep += direction;
+            
+            // Show new step
+            const newSection = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+            newSection.classList.add('active');
+            
+            // Update progress bar
+            updateProgressBar();
+            
+            // Update buttons
+            updateButtons();
+            
+            // Show review summary on last step
+            if (currentStep === totalSteps) {
+                generateReviewSummary();
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Update navigation buttons
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // Toggle facility selection
+        function toggleFacility(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            element.classList.toggle('checked', checkbox.checked);
+        }
+
+        // Generate review summary
+        function generateReviewSummary() {
+            const form = document.getElementById('registrationForm');
+            const formData = new FormData(form);
+            
+            let summary = '';
+            
+            // Basic Information
+            summary += `<div style="margin-bottom: 25px;">
+                <h4 style="color: #4285f4; margin-bottom: 10px;">📋 Basic Information</h4>
+                <p><strong>Property Name:</strong> ${formData.get('title') || 'N/A'}</p>
+                <p><strong>Category:</strong> ${getSelectText('propertycategory')}</p>
+                <p><strong>District:</strong> ${getSelectText('districtid')}</p>
+                <p><strong>Address:</strong> ${formData.get('address') || 'N/A'}</p>
+            </div>`;
+            
+            // Images
+            const imageFields = ['main_picture', 'bedareaimage', 'diningareaimage', 'bathroomimage', 'roominteriorimage', 'poolareaimage'];
+            const uploadedImages = imageFields.filter(field => formData.get(field)).length;
+            
+            summary += `<div style="margin-bottom: 25px;">
+                <h4 style="color: #4285f4; margin-bottom: 10px;">📸 Images</h4>
+                <p><strong>Images Uploaded:</strong> ${uploadedImages} of ${imageFields.length}</p>
+            </div>`;
+            
+            // Facilities
+            const facilities = Array.from(document.querySelectorAll('input[name="facilities"]:checked'))
+                .map(cb => cb.parentElement.querySelector('.facility-title').textContent);
+            
+            summary += `<div style="margin-bottom: 25px;">
+                <h4 style="color: #4285f4; margin-bottom: 10px;">✨ Facilities</h4>
+                <p><strong>Total Selected:</strong> ${facilities.length}</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">`;
+            
+            facilities.forEach(facility => {
+                summary += `<li>${facility}</li>`;
+            });
+            summary += `</ul></div>`;
+            
+            // Pricing
+            summary += `<div style="margin-bottom: 25px;">
+                <h4 style="color: #4285f4; margin-bottom: 10px;">💰 Pricing</h4>
+                <p><strong>Minimum Price Per Night:</strong> LKR ${formData.get('minimum_night_price') || 'N/A'}</p>
+                <p><strong>Additional Guest Price:</strong> LKR ${formData.get('additional_guest_price') || 'N/A'}</p>
+            </div>`;
+            
+            document.getElementById('reviewSummary').innerHTML = summary;
+        }
+
+        // Helper function to get select text
+        function getSelectText(name) {
+            const select = document.querySelector(`select[name="${name}"]`);
+            return select ? select.options[select.selectedIndex].text : 'N/A';
+        }
+
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = '⏳ Submitting...';
+            submitBtn.disabled = true;
+        });
+
+        // Initialize facility checkboxes
+        document.querySelectorAll('.facility-card input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // Initialize
+        updateProgressBar();
+    </script>
 </body>
 </html>
