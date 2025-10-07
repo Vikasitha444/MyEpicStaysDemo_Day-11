@@ -99,7 +99,7 @@ class Property(models.Model):
     propertyid = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=255)
     longdescription = models.TextField()
-    shortdescription = models.CharField(max_length=255)
+    shortdescription = models.TextField()
     propertycategory = models.ForeignKey(PropertyCategories, on_delete=models.CASCADE, db_column='propertycategory')
     address = models.CharField(max_length=200)
     districtid = models.ForeignKey(Districts, on_delete=models.CASCADE, db_column='districtid')
@@ -161,13 +161,13 @@ class PropertyPictures(models.Model):
     propertypictureid = models.BigAutoField(primary_key=True)
     propertyid = models.ForeignKey(Property, on_delete=models.CASCADE, db_column='propertyid')
     title = models.CharField(max_length=255)
-    picture = models.CharField(max_length=255)
+    picture = models.TextField()
     description = models.TextField()
-    bedareaimage  = models.CharField(max_length=500)
-    diningareaimage  = models.CharField(max_length=500)
-    bathroomimage  = models.CharField(max_length=500)
-    roominteriorimage = models.CharField(max_length=500)
-    poolareaimage  = models.CharField(max_length=500)
+    bedareaimage  = models.TextField()
+    diningareaimage  = models.TextField()
+    bathroomimage  = models.TextField()
+    roominteriorimage = models.TextField()
+    poolareaimage  = models.TextField()
 
 
     class Meta:
