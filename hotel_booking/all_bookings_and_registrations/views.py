@@ -18,6 +18,7 @@ from .models import (
     PropertyRoomCategories, PropertyPriceDetails,
     PropertyPictures 
 )
+from .verification import check_hotel_on_websites
 
 
 
@@ -27,6 +28,7 @@ def home(request):
   context = {
       'all_districts': all_districts  
   }
+
   return render(request, 'home.html',context)
 
 
@@ -233,6 +235,12 @@ def register_hotel(request):
                 '209': 'Wildlife Safari',
                 '210': 'Historic Tours'
             }
+
+
+
+            verified_property = check_hotel_on_websites(title)
+            print(verified_property)
+
             
             # Validate required fields
             if not all([title, shortdescription, longdescription, propertycategory_id, 
@@ -269,7 +277,7 @@ def register_hotel(request):
                 address=address,
                 googlemappin=googlemappin if googlemappin else None,
                 defaultpictureid=None,
-                verified='N',
+                verified=None,
                 enabled='Y',
                 verifiedby=None,
                 verifiedtimestamp=None,
