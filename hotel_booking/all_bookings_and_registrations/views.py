@@ -282,7 +282,7 @@ def register_hotel(request):
                 address=address,
                 googlemappin=googlemappin if googlemappin else None,
                 defaultpictureid=None,
-                verified=None,
+                verified=verified_property,
                 enabled='Y',
                 verifiedby=None,
                 verifiedtimestamp=None,
