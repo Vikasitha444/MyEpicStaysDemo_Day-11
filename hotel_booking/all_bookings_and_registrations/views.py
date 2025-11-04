@@ -102,14 +102,19 @@ def results(request):
         for property in all_properties:
             property_pictures.append(PropertyPictures.objects.filter(propertyid=property.propertyid).values('picture').first()['picture'])
 
-        #මෙතැනදී, ලේසි වෙන්න, total_price එකයි,  "all_properties" ටිකයි, එකක් විදිහට එකතු කරලා, Template එකට යවනවා.
-        all_in_one = zip(total_price,all_properties,property_pictures)
+        
 
         #Zip object එක, එයාට පාරක් විතරයි iterate වෙන්න පුළුවන්
         #ඒ නිසා, ආයේ Property Details, Zip object එකක් විදිහට හැදුවා Map එකට දෙන්න.
         all_in_one_for_map = zip(total_price,all_properties,property_pictures)
 
-
+        #මෙතැනදී, කරලා තියෙන්නේ,  Verified Properties ගන්න එක
+        verifed_hotels = []
+        for property in all_properties:
+            verifed_hotels.append(Property.objects.filter(propertyid=property.propertyid).values('verified').first()['verified'])
+        
+        #මෙතැනදී, ලේසි වෙන්න, total_price එකයි,  "all_properties" ටිකයි, එකක් විදිහට එකතු කරලා, Template එකට යවනවා.
+        all_in_one = zip(total_price,all_properties,property_pictures,verifed_hotels)
         
         context = {
             'destination': destination,
