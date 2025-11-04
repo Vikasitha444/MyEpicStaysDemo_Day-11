@@ -18,6 +18,8 @@ from .models import (
     PropertyRoomCategories, PropertyPriceDetails,
     PropertyPictures 
 )
+
+#මෙතැනදී, Hotel Verification Function එක  "verification.py" කියන File එකෙන් Import කරනවා. මොකද මම ඒ Function එක වෙනම, හැදුවේ.
 from .verification import check_hotel_on_websites
 
 
@@ -237,11 +239,14 @@ def register_hotel(request):
             }
 
 
-
+            
+            #මෙතන තමා, Hotel Verification Function එක Call කරන එක කරන්නේ
             verified_property = check_hotel_on_websites(title)
             print(verified_property)
 
-            
+
+
+
             # Validate required fields
             if not all([title, shortdescription, longdescription, propertycategory_id, 
                        districtid, address, main_picture, bedareaimage, diningareaimage, 
