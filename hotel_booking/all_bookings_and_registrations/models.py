@@ -97,15 +97,15 @@ class PropertyCategories(models.Model):
 
 class Property(models.Model):
     propertyid = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=200)
     longdescription = models.TextField()
     shortdescription = models.TextField()
     propertycategory = models.ForeignKey(PropertyCategories, on_delete=models.CASCADE, db_column='propertycategory')
-    address = models.CharField(max_length=200)
+    address = models.TextField()
     districtid = models.ForeignKey(Districts, on_delete=models.CASCADE, db_column='districtid')
     defaultpictureid = models.CharField(max_length=20)
     googlemappin = models.CharField(max_length=200)
-    verified = models.CharField(max_length=3)
+    verified = models.TextField()
     verifiedby = models.CharField(max_length=200)
     verifiedtimestamp = models.CharField(max_length=200)
     verifiednotes = models.CharField(max_length=200)
