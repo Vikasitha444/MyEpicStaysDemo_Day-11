@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyEpicStays | Find Your Best Destination</title>
     <link rel="icon" href="https://myepicstays.com//assets/img/Symbol-01.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <style>
         :root {
             --primary-color: #006ce4;
@@ -677,6 +678,22 @@
             .tab-selection {
                 margin: 0 10px;
             }
+
+
+            .map-container {
+                flex: 1;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+                position: relative;
+                height: 450px; /* මේක add කරන්න */
+            }
+
+            #propertyMap {
+                width: 100%;
+                height: 100%;
+                border-radius: 8px;
+            }
         }
     </style>
 </head>
@@ -800,7 +817,7 @@
             </div>
             
             <div class="map-container">
-                <img src="https://placeholder.com/600x400" alt="Map location" class="map-img">
+                <div id="propertyMap" style="width: 100%; height: 100%;"></div>
                 <div class="show-on-map">
                     <span>🗺️</span>
                     <span>Show on map</span>
@@ -960,6 +977,37 @@
             
             alert(message);
         }
+    </script>
+    <!-- Leaflet JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+
+    <script>
+        {% for property in properties %}
+            // Map එක initialize කරනවා
+            var propertyMap = L.map('propertyMap').setView([{{ property.googlemappin }}], 15);
+
+            // Map tiles add කරනවා
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(propertyMap);
+
+            // Property location එක mark කරනවා
+            var marker = L.marker([{{ property.googlemappin }}]).addTo(propertyMap);
+            
+            // Popup එක add කරනවා
+            marker.bindPopup(`
+                <div style="text-align: center; padding: 10px;">
+                    <h3 style="margin: 0 0 10px 0; color: #006ce4;">{{ property.title }}</h3>
+                    <p style="margin: 0; color: #666;">{{ property.address }}</p>
+                </div>
+            `).openPopup();
+
+            // Show on map button එකට click event එක
+            document.querySelector('.show-on-map').addEventListener('click', function() {
+                propertyMap.setView([{{ property.googlemappin }}], 17);
+                marker.openPopup();
+            });
+        {% endfor %}
     </script>
 </body>
 </html>
