@@ -8,11 +8,13 @@ def check_hotel_on_websites(hotel_name):
     අවම websites 2කින් හම්බුණොත් Criteria Pass වෙනවා
     """
 
-    url = "https://google-web-search1.p.rapidapi.com/"
+    # අලුත් API endpoint එක
+    url = "https://google-search74.p.rapidapi.com/"
 
+    # API Headers - අලුත් host එක එක්ක
     headers = {
         "x-rapidapi-key": "5cda8d51e7mshd600748ed7e4f2fp18862djsn2fc7d7a1f32f",
-        "x-rapidapi-host": "google-web-search1.p.rapidapi.com"
+        "x-rapidapi-host": "google-search74.p.rapidapi.com"
     }
 
     # Check කරන්න ඕනේ websites
@@ -30,6 +32,7 @@ def check_hotel_on_websites(hotel_name):
         # Hotel නම + website නම එක්ක search query එක හදනවා
         search_query = f"{hotel_name} {website}"
 
+        # Query parameters - අලුත් API එකට අනුව
         querystring = {
             "query": search_query,
             "limit": "10",
@@ -39,6 +42,7 @@ def check_hotel_on_websites(hotel_name):
         print(f"\n🔎 Search කරනවා: '{search_query}'")
 
         try:
+            # API call එක යවනවා
             response = requests.get(url, headers=headers, params=querystring)
             data = response.json()
 
@@ -57,7 +61,6 @@ def check_hotel_on_websites(hotel_name):
                         # 2. Hotel නම EXACTLY title එකේ හරි description එකේ තියෙනවද check කරන්න
                         hotel_name_lower = hotel_name.lower()
 
-                        # Exact match check කරනවා (පුංචි වෙනස්කම් ignore කරමින්)
                         # Title හරි description එකේ hotel නම හරියටම තියෙනවද බලනවා
                         if hotel_name_lower in result_title or hotel_name_lower in result_description:
                             websites[website] = True
@@ -115,3 +118,4 @@ def check_hotel_on_websites(hotel_name):
 
         print("\n" + "="*60)
         return False
+#97
